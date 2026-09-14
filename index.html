@@ -1,7 +1,974 @@
-<script type='text/javascript'>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IDM Activator · Open Source Community</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-var d='<data:blog.url/>';
-d=d.replace(/.\/\/[^\/]/, '');
-location.href = 'https://github.com/iemabdullah/IDM-Activator';
-</script>
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f8faff;
+      color: #1a2233;
+      line-height: 1.6;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+    }
 
+    .bg-glow {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -2;
+      background: radial-gradient(circle at 80% 20%, rgba(0, 120, 255, 0.05), transparent 60%),
+                  radial-gradient(circle at 20% 80%, rgba(120, 0, 255, 0.05), transparent 60%);
+      animation: breathe 12s infinite alternate ease-in-out;
+    }
+
+    @keyframes breathe {
+      0% { opacity: 0.6; transform: scale(1); }
+      100% { opacity: 1; transform: scale(1.05); }
+    }
+
+    .grid-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: linear-gradient(rgba(0, 120, 255, 0.02) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(0, 120, 255, 0.02) 1px, transparent 1px);
+      background-size: 40px 40px;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 24px;
+      position: relative;
+      z-index: 10;
+    }
+
+    header {
+      padding: 30px 0 10px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(0, 100, 255, 0.1);
+      animation: fadeSlideDown 0.9s ease-out;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo i {
+      font-size: 2.8rem;
+      color: #0066ff;
+      text-shadow: 0 0 20px rgba(0, 102, 255, 0.3);
+      animation: pulseIcon 3s infinite;
+    }
+
+    @keyframes pulseIcon {
+      0%, 100% { text-shadow: 0 0 20px rgba(0, 102, 255, 0.3); }
+      50% { text-shadow: 0 0 35px rgba(0, 102, 255, 0.6), 0 0 50px rgba(0, 102, 255, 0.2); }
+    }
+
+    .logo h1 {
+      font-size: 1.9rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      background: linear-gradient(135deg, #1a2233, #0066ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .logo span {
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: #6a7c8f;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .badge {
+      background: rgba(0, 102, 255, 0.08);
+      border: 1px solid rgba(0, 102, 255, 0.2);
+      padding: 8px 16px;
+      border-radius: 100px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #0066ff;
+      backdrop-filter: blur(8px);
+      animation: floatBadge 4s infinite alternate;
+    }
+
+    @keyframes floatBadge {
+      from { transform: translateY(0); }
+      to { transform: translateY(-4px); }
+    }
+
+    .hero {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      padding: 60px 0 50px;
+      gap: 40px;
+      animation: fadeSlideUp 1s ease-out;
+    }
+
+    .hero-content {
+      flex: 1 1 500px;
+    }
+
+    .hero-content .eyebrow {
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      color: #0066ff;
+      font-weight: 600;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .hero-content .eyebrow i {
+      font-size: 1rem;
+    }
+
+    .hero-content h2 {
+      font-size: clamp(2.5rem, 6vw, 4.2rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -2px;
+      background: linear-gradient(to right, #1a2233, #0066ff, #00b8ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 24px;
+    }
+
+    .hero-content p {
+      font-size: 1.1rem;
+      color: #4a5a6f;
+      max-width: 550px;
+      margin-bottom: 32px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 28px;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 1rem;
+      text-decoration: none;
+      transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      border: 1px solid transparent;
+      cursor: pointer;
+      background: none;
+      color: white;
+    }
+
+    .btn-primary {
+      background: linear-gradient(145deg, #0066ff, #00b8ff);
+      box-shadow: 0 12px 30px -8px rgba(0, 102, 255, 0.4);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 22px 40px -8px rgba(0, 102, 255, 0.5);
+      background: linear-gradient(145deg, #1a7aff, #20c8ff);
+    }
+
+    .btn-outline {
+      border: 1px solid rgba(0, 102, 255, 0.3);
+      background: rgba(0, 102, 255, 0.04);
+      backdrop-filter: blur(8px);
+      color: #0066ff;
+    }
+
+    .btn-outline:hover {
+      background: rgba(0, 102, 255, 0.1);
+      border-color: #0066ff;
+      transform: translateY(-3px);
+    }
+
+    .hero-visual {
+      flex: 1 1 380px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .terminal-card {
+      background: #ffffff;
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(0, 102, 255, 0.15);
+      border-radius: 28px;
+      padding: 24px;
+      width: 100%;
+      max-width: 440px;
+      box-shadow: 0 30px 50px -15px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(0, 102, 255, 0.05) inset;
+      animation: floatCard 6s ease-in-out infinite;
+    }
+
+    @keyframes floatCard {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .terminal-header {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+
+    .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #d0d8e0;
+    }
+
+    .dot.red { background: #ff5f56; }
+    .dot.yellow { background: #ffbd2e; }
+    .dot.green { background: #27c93f; }
+
+    .terminal-line {
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 0.85rem;
+      color: #0066ff;
+      background: #f0f6ff;
+      padding: 10px 14px;
+      border-radius: 12px;
+      border-left: 3px solid #0066ff;
+      word-break: break-all;
+      margin-bottom: 12px;
+      box-shadow: 0 2px 10px rgba(0, 102, 255, 0.05);
+    }
+
+    .terminal-line i {
+      color: #0066ff;
+      margin-right: 8px;
+    }
+
+    section {
+      padding: 70px 0;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+    }
+
+    .section-title {
+      font-size: 2.2rem;
+      font-weight: 700;
+      letter-spacing: -1px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      color: #1a2233;
+    }
+
+    .section-title i {
+      color: #0066ff;
+      font-size: 2rem;
+    }
+
+    .section-sub {
+      color: #6a7c8f;
+      max-width: 700px;
+      margin-bottom: 40px;
+      font-size: 1.05rem;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+    }
+
+    .card {
+      background: #ffffff;
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(0, 102, 255, 0.1);
+      border-radius: 24px;
+      padding: 28px;
+      transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+      animation: cardReveal 0.7s ease-out;
+      animation-fill-mode: both;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+    }
+
+    .card:nth-child(1) { animation-delay: 0.05s; }
+    .card:nth-child(2) { animation-delay: 0.1s; }
+    .card:nth-child(3) { animation-delay: 0.15s; }
+    .card:nth-child(4) { animation-delay: 0.2s; }
+
+    @keyframes cardReveal {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(0, 102, 255, 0.3);
+      box-shadow: 0 28px 40px -15px rgba(0, 102, 255, 0.15);
+    }
+
+    .card i {
+      font-size: 2rem;
+      color: #0066ff;
+      margin-bottom: 18px;
+      background: rgba(0, 102, 255, 0.06);
+      width: 60px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 18px;
+    }
+
+    .card h3 {
+      font-size: 1.4rem;
+      margin-bottom: 12px;
+      font-weight: 700;
+      color: #1a2233;
+    }
+
+    .card p, .card ul {
+      color: #4a5a6f;
+      font-size: 0.98rem;
+    }
+
+    .card ul {
+      list-style: none;
+      padding-left: 0;
+      margin-top: 10px;
+    }
+
+    .card ul li {
+      padding: 5px 0;
+      display: flex;
+      gap: 8px;
+      align-items: baseline;
+    }
+
+    .card ul li i {
+      font-size: 0.8rem;
+      width: auto;
+      height: auto;
+      background: none;
+      color: #0066ff;
+      margin: 0;
+    }
+
+    .code-block {
+      background: #f0f6ff;
+      border-radius: 16px;
+      padding: 18px;
+      border-left: 4px solid #0066ff;
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 0.85rem;
+      color: #0066ff;
+      overflow-x: auto;
+      white-space: pre-wrap;
+      word-break: break-all;
+      margin: 16px 0;
+      box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.02);
+    }
+
+    .code-block a {
+      color: #0066ff;
+      text-decoration: underline;
+      word-break: break-all;
+    }
+
+    .tag {
+      display: inline-block;
+      background: rgba(0, 102, 255, 0.08);
+      border-radius: 40px;
+      padding: 4px 14px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      color: #0066ff;
+      text-transform: uppercase;
+      margin-right: 8px;
+      margin-bottom: 8px;
+    }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin: 24px 0;
+    }
+
+    .menu-item {
+      background: rgba(0, 102, 255, 0.02);
+      border: 1px solid rgba(0, 102, 255, 0.12);
+      border-radius: 14px;
+      padding: 14px 18px;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: all 0.2s;
+      color: #1a2233;
+    }
+
+    .menu-item i {
+      color: #0066ff;
+      width: 20px;
+      text-align: center;
+    }
+
+    .menu-item:hover {
+      background: rgba(0, 102, 255, 0.06);
+      border-color: #0066ff;
+    }
+
+    .disclaimer {
+      background: rgba(255, 180, 0, 0.05);
+      border: 1px solid rgba(255, 180, 0, 0.25);
+      border-radius: 20px;
+      padding: 24px;
+      display: flex;
+      gap: 18px;
+      align-items: flex-start;
+      margin: 30px 0;
+    }
+
+    .disclaimer i {
+      font-size: 2rem;
+      color: #e6a800;
+    }
+
+    .disclaimer p {
+      color: #7a5c00;
+      font-size: 0.98rem;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .info-item {
+      background: #ffffff;
+      border: 1px solid rgba(0, 102, 255, 0.1);
+      border-radius: 16px;
+      padding: 18px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.02);
+    }
+
+    .info-item h4 {
+      color: #0066ff;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+    }
+
+    .info-item p {
+      color: #1a2233;
+      font-size: 0.95rem;
+      font-weight: 500;
+      word-break: break-all;
+    }
+
+    .info-item a {
+      color: #0066ff;
+      text-decoration: underline;
+      word-break: break-all;
+    }
+
+    .preview-img {
+      width: 100%;
+      border-radius: 16px;
+      border: 1px solid rgba(0, 102, 255, 0.15);
+      margin-top: 16px;
+      box-shadow: 0 10px 30px -10px rgba(0, 102, 255, 0.15);
+      transition: transform 0.3s ease;
+    }
+
+    .preview-img:hover {
+      transform: scale(1.02);
+    }
+
+    .img-caption {
+      font-size: 0.8rem;
+      color: #8a9ab0;
+      text-align: center;
+      margin-top: 8px;
+      font-style: italic;
+    }
+
+    footer {
+      padding: 40px 0 30px;
+      text-align: center;
+      color: #6a7c8f;
+      font-size: 0.9rem;
+      border-top: 1px solid rgba(0, 0, 0, 0.04);
+    }
+
+    footer .heart {
+      color: #ff4d6d;
+      animation: heartbeat 1.5s infinite;
+      display: inline-block;
+    }
+
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      30% { transform: scale(1.2); }
+      60% { transform: scale(1); }
+    }
+
+    @keyframes fadeSlideDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 768px) {
+      header { flex-direction: column; gap: 16px; align-items: flex-start; }
+      .hero { padding: 40px 0 30px; }
+      .hero-content h2 { font-size: 2.2rem; }
+      .section-title { font-size: 1.8rem; }
+      .badge { align-self: flex-start; }
+    }
+
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #f0f6ff;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #b0c8e0;
+      border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #0066ff;
+    }
+
+    .mt-4 { margin-top: 24px; }
+    .mb-2 { margin-bottom: 8px; }
+    .text-glow { text-shadow: 0 0 15px rgba(0, 102, 255, 0.3); }
+  </style>
+</head>
+<body>
+  <div class="bg-glow"></div>
+  <div class="grid-overlay"></div>
+
+  <div class="container">
+    <!-- Header -->
+    <header>
+      <div class="logo">
+        <i class="fas fa-bolt"></i>
+        <div>
+          <h1>IDM Activator</h1>
+          <span>Open Source Community</span>
+        </div>
+      </div>
+      <div class="badge">
+        <i class="fas fa-code-branch"></i> v4.0 · 2025-10-26
+      </div>
+    </header>
+
+    <!-- Hero -->
+    <div class="hero">
+      <div class="hero-content">
+        <div class="eyebrow">
+          <i class="fas fa-shield-hal"></i> Registry & File Replacement
+        </div>
+        <h2>Activate IDM<br>Like a Pro.</h2>
+        <p>Advanced registry manipulation, trial reset, and file replacement — all in one powerful script. Built by the community, for educational purposes.</p>
+        <div class="hero-actions">
+          <a href="https://github.com/iemabdullah/IDM-Activator" target="_blank" class="btn btn-primary">
+            <i class="fab fa-github"></i> Official GitHub
+          </a>
+          <a href="#usage" class="btn btn-outline">
+            <i class="fas fa-arrow-down"></i> How to use
+          </a>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="terminal-card">
+          <div class="terminal-header">
+            <div class="dot red"></div>
+            <div class="dot yellow"></div>
+            <div class="dot green"></div>
+          </div>
+          <div class="terminal-line">
+            <i class="fas fa-angle-right"></i> irm https://raw.githubusercontent.com/.../install.ps1 | iex
+          </div>
+          <div class="terminal-line">
+            <i class="fas fa-check-circle" style="color:#27c93f;"></i> Elevating privileges...
+          </div>
+          <div class="terminal-line">
+            <i class="fas fa-check-circle" style="color:#27c93f;"></i> Registry keys locked.
+          </div>
+          <div class="terminal-line">
+            <i class="fas fa-check-circle" style="color:#27c93f;"></i> IDM activated.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Menu Preview Image -->
+    <section id="preview">
+      <div class="section-title">
+        <i class="fas fa-image"></i> Screenshots & Preview
+      </div>
+      <div class="section-sub">Visual previews of the IDM Activator menu and activation process.</div>
+      <div class="grid-2">
+        <div class="card">
+          <h3><i class="fas fa-list"></i> Main Menu Options</h3>
+          <img src="https://github.com/user-attachments/assets/d516aba3-b682-4794-90c5-be8560cf4546" 
+               alt="IDM Activator Menu" 
+               class="preview-img"
+               onerror="this.src='https://placehold.co/516x427/0066ff/white?text=IDM+Activator+Menu'">
+          <p class="img-caption">IDM Activator main menu interface</p>
+        </div>
+        <div class="card">
+          <h3><i class="fas fa-cog"></i> Activation Process</h3>
+          <img src="https://placehold.co/516x427/f0f6ff/0066ff?text=Activation+Process" 
+               alt="Activation Process" 
+               class="preview-img">
+          <p class="img-caption">Activation process in action</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- How it works -->
+    <section id="how">
+      <div class="section-title">
+        <i class="fas fa-cogs"></i> How it works
+      </div>
+      <div class="section-sub">The script modifies Windows registry and simulates legitimate usage to bypass activation.</div>
+      <div class="grid-2">
+        <div class="card">
+          <i class="fas fa-registered"></i>
+          <h3>Registry Modification</h3>
+          <p>Directly edits <code>HKCU\Software\DownloadManager</code> to inject fake registration details and lock keys.</p>
+        </div>
+        <div class="card">
+          <i class="fas fa-redo-alt"></i>
+          <h3>Trial Reset</h3>
+          <p>Clears existing registration data, resetting the trial period to 30 days.</p>
+        </div>
+        <div class="card">
+          <i class="fas fa-user-secret"></i>
+          <h3>Fake Registration</h3>
+          <p>Inserts name <strong>@Open Source Community</strong>, email <strong>info@tonec.com</strong>, and serial <strong>FOX6H-3KWH4-7TSIN-Q4US7</strong>.</p>
+        </div>
+        <div class="card">
+          <i class="fas fa-download"></i>
+          <h3>Download Simulation</h3>
+          <p>Downloads files from IDM's official website to trigger registry key creation naturally.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Technical Details -->
+    <section id="technical">
+      <div class="section-title">
+        <i class="fas fa-microchip"></i> Technical Details
+      </div>
+      <div class="section-sub">What the script does under the hood.</div>
+      <div class="grid-2">
+        <div class="card">
+          <i class="fas fa-user-shield"></i>
+          <h3>Elevation & Process</h3>
+          <ul>
+            <li><i class="fas fa-check"></i> Elevates to Administrator</li>
+            <li><i class="fas fa-check"></i> Kills IDM process</li>
+            <li><i class="fas fa-check"></i> Deletes existing registry keys</li>
+            <li><i class="fas fa-check"></i> Adds fake registration details</li>
+          </ul>
+        </div>
+        <div class="card">
+          <i class="fas fa-link"></i>
+          <h3>Download Simulation URLs</h3>
+          <ul>
+            <li><i class="fas fa-image"></i> <a href="https://www.internetdownloadmanager.com/images/idm_box_min.png" target="_blank">idm_box_min.png</a></li>
+            <li><i class="fas fa-image"></i> <a href="https://www.internetdownloadmanager.com/register/IDMlib/images/idman_logos.png" target="_blank">idman_logos.png</a></li>
+            <li><i class="fas fa-image"></i> <a href="https://www.internetdownloadmanager.com/pictures/idm_about.png" target="_blank">idm_about.png</a></li>
+            <li><i class="fas fa-image"></i> <a href="https://www.internetdownloadmanager.com/languages/indian.png" target="_blank">indian.png</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="info-grid mt-4">
+        <div class="info-item">
+          <h4>Registry Path</h4>
+          <p>HKCU\Software\DownloadManager</p>
+        </div>
+        <div class="info-item">
+          <h4>Fake Name</h4>
+          <p>@Open Source Community</p>
+        </div>
+        <div class="info-item">
+          <h4>Fake Email</h4>
+          <p>info@tonec.com</p>
+        </div>
+        <div class="info-item">
+          <h4>Fake Serial</h4>
+          <p>FOX6H-3KWH4-7TSIN-Q4US7</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features / Methods -->
+    <section id="methods">
+      <div class="section-title">
+        <i class="fas fa-layer-group"></i> Activation Methods
+      </div>
+      <div class="section-sub">Choose between registry-based or file replacement approach.</div>
+      <div class="grid-2">
+        <div class="card">
+          <i class="fas fa-key"></i>
+          <h3>Registry Method</h3>
+          <p>Classic approach: modifies registry, locks keys, and simulates downloads.</p>
+          <ul>
+            <li><i class="fas fa-check"></i> Resets trial</li>
+            <li><i class="fas fa-check"></i> Applies fake serial</li>
+            <li><i class="fas fa-check"></i> Locks registry keys</li>
+          </ul>
+          <div class="code-block">IDM_Activator.cmd /act</div>
+        </div>
+        <div class="card">
+          <i class="fas fa-file-code"></i>
+          <h3>File Replacement</h3>
+          <p>Replaces <code>IDMan.exe</code> and <code>IDMGrHlp.exe</code> with modified versions.</p>
+          <ul>
+            <li><i class="fas fa-check"></i> Automatic backup</li>
+            <li><i class="fas fa-check"></i> Requires data.bin & dataHlp.bin</li>
+            <li><i class="fas fa-check"></i> Custom registration</li>
+          </ul>
+          <div class="code-block">IDM_Activator.cmd /act /file</div>
+        </div>
+      </div>
+      <div class="card mt-4">
+        <i class="fas fa-file-archive"></i>
+        <h3>Required Files for File Replacement</h3>
+        <div class="menu-grid">
+          <div class="menu-item"><i class="fas fa-file"></i> <a href="file:///c%3A/Users/rehan/Desktop/IDM_Activator/data.bin">data.bin</a> (replaces IDMan.exe)</div>
+          <div class="menu-item"><i class="fas fa-file"></i> <a href="file:///c%3A/Users/rehan/Desktop/IDM_Activator/dataHlp.bin">dataHlp.bin</a> (replaces IDMGrHlp.exe)</div>
+          <div class="menu-item"><i class="fas fa-file"></i> <a href="file:///c%3A/Users/rehan/Desktop/IDM_Activator/registry.bin">registry.bin</a> (optional)</div>
+        </div>
+      </div>
+      <div class="card mt-4">
+        <i class="fas fa-file-code"></i>
+        <h3>Replaced Executables</h3>
+        <div class="menu-grid">
+          <div class="menu-item"><i class="fas fa-file-exe"></i> <a href="file:///c%3A/Users/rehan/Desktop/IDM_Activator/IDMan.exe">IDMan.exe</a></div>
+          <div class="menu-item"><i class="fas fa-file-exe"></i> <a href="file:///c%3A/Users/rehan/Desktop/IDM_Activator/IDMGrHlp.exe">IDMGrHlp.exe</a></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Usage Guide -->
+    <section id="usage">
+      <div class="section-title">
+        <i class="fas fa-play-circle"></i> Usage Guide
+      </div>
+      <div class="section-sub">Run as Administrator and follow the menu.</div>
+      <div class="grid-2">
+        <div class="card">
+          <i class="fas fa-terminal"></i>
+          <h3>Quick Start</h3>
+          <div class="code-block"># PowerShell (Admin)<br>irm https://raw.githubusercontent.com/iemabdullah/IDM-Activator/refs/heads/main/install.ps1 | iex</div>
+          <p>Or download <strong>IDM_Activator.cmd</strong> and run as admin.</p>
+        </div>
+        <div class="card">
+          <i class="fas fa-list"></i>
+          <h3>Main Menu</h3>
+          <div class="menu-grid">
+            <div class="menu-item"><i class="fas fa-check-circle"></i> [1] Registry Activation</div>
+            <div class="menu-item"><i class="fas fa-file"></i> [2] File Replacement</div>
+            <div class="menu-item"><i class="fas fa-undo"></i> [3] Reset Trial</div>
+            <div class="menu-item"><i class="fas fa-info-circle"></i> [4] Check Version</div>
+            <div class="menu-item"><i class="fas fa-download"></i> [5] Download Latest</div>
+            <div class="menu-item"><i class="fas fa-shield"></i> [6] Check Status</div>
+            <div class="menu-item"><i class="fas fa-fire"></i> [7] Toggle Firewall</div>
+            <div class="menu-item"><i class="fas fa-book"></i> [8] ReadMe</div>
+            <div class="menu-item"><i class="fas fa-globe"></i> [9] Homepage</div>
+            <div class="menu-item"><i class="fas fa-sign-out-alt"></i> [0] Exit</div>
+          </div>
+        </div>
+      </div>
+      <div class="card mt-4">
+        <i class="fas fa-cog"></i>
+        <h3>Command Line Options</h3>
+        <div class="code-block">
+          IDM_Activator.cmd /act          # activate silently<br>
+          IDM_Activator.cmd /res /s       # reset silently<br>
+          IDM_Activator.cmd -el           # elevate privileges
+        </div>
+      </div>
+    </section>
+
+    <!-- Installation Methods -->
+    <section id="installation">
+      <div class="section-title">
+        <i class="fas fa-download"></i> Installation Methods
+      </div>
+      <div class="section-sub">Multiple ways to get started.</div>
+      <div class="grid-2">
+        <div class="card">
+          <i class="fab fa-powershell"></i>
+          <h3>Method 1: PowerShell</h3>
+          <div class="code-block">irm https://raw.githubusercontent.com/iemabdullah/IDM-Activator/refs/heads/main/install.ps1 | iex</div>
+          <p>Troubleshooting: <code>Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass</code></p>
+          <p class="mb-2">Then re-run: <code>irm https://raw.githubusercontent.com/iemabdullah/IDM-Activator/main/IDM_Activator.cmd | iex</code></p>
+        </div>
+        <div class="card">
+          <i class="fas fa-download"></i>
+          <h3>Method 2: Manual Download</h3>
+          <ul>
+            <li><i class="fas fa-check"></i> <a href="https://github.com/iemabdullah/IDM-Activator/releases/" target="_blank">Download from releases page</a></li>
+            <li><i class="fas fa-check"></i> Direct link: <a href="https://raw.githubusercontent.com/iemabdullah/IDM-Activator/refs/heads/main/IDM_Activator.cmd" target="_blank">IDM_Activator.cmd</a></li>
+          </ul>
+        </div>
+        <div class="card">
+          <i class="fas fa-rocket"></i>
+          <h3>Method 3: Launcher Script</h3>
+          <ul>
+            <li><i class="fas fa-check"></i> Download <a href="https://raw.githubusercontent.com/iemabdullah/IDM-Activator/refs/heads/main/IASL.cmd" target="_blank">IASL.cmd</a></li>
+            <li><i class="fas fa-check"></i> Right-click → Run as administrator</li>
+          </ul>
+        </div>
+        <div class="card">
+          <i class="fab fa-windows"></i>
+          <h3>Method 4: PowerShell Script</h3>
+          <ul>
+            <li><i class="fas fa-check"></i> Download <a href="https://raw.githubusercontent.com/iemabdullah/IDM-Activator/main/install.ps1" target="_blank">install.ps1</a></li>
+            <li><i class="fas fa-check"></i> Right-click → Run with PowerShell</li>
+            <li><i class="fas fa-check"></i> Allow UAC prompt</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Troubleshooting -->
+    <section id="troubleshoot">
+      <div class="section-title">
+        <i class="fas fa-wrench"></i> Troubleshooting
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <i class="fas fa-exclamation-triangle"></i>
+          <h3>Common Issues</h3>
+          <ul>
+            <li><i class="fas fa-times-circle"></i> <strong>Requires Admin:</strong> Right-click → Run as administrator</li>
+            <li><i class="fas fa-times-circle"></i> <strong>IDM Not Installed:</strong> Install IDM first</li>
+            <li><i class="fas fa-times-circle"></i> <strong>Activation fails:</strong> Reset trial (option 3) then retry</li>
+            <li><i class="fas fa-times-circle"></i> <strong>File replacement fails:</strong> Ensure data.bin & dataHlp.bin are present</li>
+            <li><i class="fas fa-times-circle"></i> <strong>Fake Serial Error:</strong> Run reset option then re-run activation</li>
+          </ul>
+        </div>
+        <div class="card">
+          <i class="fas fa-tools"></i>
+          <h3>Advanced Fixes</h3>
+          <ul>
+            <li><i class="fas fa-trash-alt"></i> Delete <code>HKCU\Software\DownloadManager</code></li>
+            <li><i class="fas fa-folder-open"></i> Clear <code>%appdata%\DMCache</code></li>
+            <li><i class="fas fa-file-export"></i> Restore <code>IDMan.exe.bak</code> → <code>IDMan.exe</code></li>
+            <li><i class="fas fa-file-export"></i> Restore <code>IDMGrHlp.exe.bak</code> → <code>IDMGrHlp.exe</code></li>
+            <li><i class="fas fa-fire-extinguisher"></i> Toggle Windows Firewall (option 7)</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Safety & Risks -->
+    <section id="safety">
+      <div class="section-title">
+        <i class="fas fa-shield-alt"></i> Safety & Risks
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <i class="fas fa-radiation"></i>
+          <h3>Potential Risks</h3>
+          <ul>
+            <li><i class="fas fa-exclamation"></i> Registry modifications can cause instability</li>
+            <li><i class="fas fa-exclamation"></i> Violates IDM's terms of service</li>
+            <li><i class="fas fa-exclamation"></i> May be flagged by antivirus</li>
+            <li><i class="fas fa-exclamation"></i> IDM updates may detect modifications</li>
+            <li><i class="fas fa-exclamation"></i> File replacement may affect functionality</li>
+          </ul>
+        </div>
+        <div class="card">
+          <i class="fas fa-check-double"></i>
+          <h3>Mitigation Strategies</h3>
+          <ul>
+            <li><i class="fas fa-check"></i> Always backup registry before use</li>
+            <li><i class="fas fa-check"></i> Use on supported Windows versions only</li>
+            <li><i class="fas fa-check"></i> Ensure IDM isn't running during activation</li>
+            <li><i class="fas fa-check"></i> Use firewall toggle if needed</li>
+            <li><i class="fas fa-check"></i> File replacement automatically creates backups</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Legal Disclaimer -->
+    <div class="disclaimer">
+      <i class="fas fa-balance-scale"></i>
+      <p><strong>⚠️ Legal Disclaimer:</strong> This script is for educational purposes only. Using it to bypass software licensing violates IDM's terms of service. The authors are not responsible for any misuse. We recommend purchasing a legitimate license.</p>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+      <p>
+        <i class="fas fa-code"></i> 
+        Based on open-source techniques · 
+        <i class="fas fa-heart heart"></i> 
+        by Open Source Community
+      </p>
+      <p style="margin-top: 12px; font-size: 0.8rem;">
+        <i class="fab fa-github"></i> 
+        <a href="https://github.com/iemabdullah/IDM-Activator" style="color:#6a7c8f; text-decoration: underline;" target="_blank">github.com/iemabdullah/IDM-Activator</a>
+      </p>
+    </footer>
+  </div>
+</body>
+</html>
