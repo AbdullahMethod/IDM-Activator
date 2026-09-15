@@ -1,1081 +1,2136 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-  <meta name="description" content="IDM Activator - Open Source Community. Advanced registry manipulation, trial reset, and file replacement.">
-  <title>IDM Activator · Open Source Community</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    html {
-      scroll-behavior: smooth;
-      -webkit-text-size-adjust: 100%;
-    }
-
-    body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: #f8faff;
-      color: #1a2233;
-      line-height: 1.6;
-      overflow-x: hidden;
-      font-size: 16px;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    img {
-      max-width: 100%;
-      height: auto;
-      display: block;
-    }
-
-    /* Animated background */
-    .bg-glow {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -2;
-      background: radial-gradient(circle at 80% 20%, rgba(0, 120, 255, 0.05), transparent 60%),
-                  radial-gradient(circle at 20% 80%, rgba(120, 0, 255, 0.05), transparent 60%);
-      animation: breathe 12s infinite alternate ease-in-out;
-      pointer-events: none;
-    }
-
-    @keyframes breathe {
-      0% { opacity: 0.6; transform: scale(1); }
-      100% { opacity: 1; transform: scale(1.05); }
-    }
-
-    .grid-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-image: linear-gradient(rgba(0, 120, 255, 0.02) 1px, transparent 1px),
-                        linear-gradient(90deg, rgba(0, 120, 255, 0.02) 1px, transparent 1px);
-      background-size: 40px 40px;
-      z-index: -1;
-      pointer-events: none;
-    }
-
-    .container {
-      max-width: 1280px;
-      margin: 0 auto;
-      padding: 0 20px;
-      position: relative;
-      z-index: 10;
-    }
-
-    /* Header */
-    header {
-      padding: 20px 0 10px;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid rgba(0, 100, 255, 0.1);
-      animation: fadeSlideDown 0.9s ease-out;
-      gap: 12px;
-    }
-
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .logo i {
-      font-size: 2.2rem;
-      color: #0066ff;
-      text-shadow: 0 0 20px rgba(0, 102, 255, 0.3);
-      animation: pulseIcon 3s infinite;
-    }
-
-    @keyframes pulseIcon {
-      0%, 100% { text-shadow: 0 0 20px rgba(0, 102, 255, 0.3); }
-      50% { text-shadow: 0 0 35px rgba(0, 102, 255, 0.6), 0 0 50px rgba(0, 102, 255, 0.2); }
-    }
-
-    .logo h1 {
-      font-size: 1.6rem;
-      font-weight: 800;
-      letter-spacing: -0.5px;
-      background: linear-gradient(135deg, #1a2233, #0066ff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      line-height: 1.2;
-    }
-
-    .logo span {
-      font-size: 0.7rem;
-      font-weight: 500;
-      color: #6a7c8f;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      display: block;
-    }
-
-    .badge {
-      background: rgba(0, 102, 255, 0.08);
-      border: 1px solid rgba(0, 102, 255, 0.2);
-      padding: 6px 14px;
-      border-radius: 100px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      color: #0066ff;
-      backdrop-filter: blur(8px);
-      animation: floatBadge 4s infinite alternate;
-      white-space: nowrap;
-    }
-
-    @keyframes floatBadge {
-      from { transform: translateY(0); }
-      to { transform: translateY(-4px); }
-    }
-
-    /* Hero */
-    .hero {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      padding: 40px 0 40px;
-      gap: 30px;
-      animation: fadeSlideUp 1s ease-out;
-    }
-
-    .hero-content {
-      flex: 1 1 100%;
-      min-width: 0;
-    }
-
-    .hero-content .eyebrow {
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      color: #0066ff;
-      font-weight: 600;
-      margin-bottom: 12px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .hero-content .eyebrow i {
-      font-size: 0.9rem;
-    }
-
-    .hero-content h2 {
-      font-size: clamp(1.9rem, 8vw, 4rem);
-      font-weight: 800;
-      line-height: 1.1;
-      letter-spacing: -1.5px;
-      background: linear-gradient(to right, #1a2233, #0066ff, #00b8ff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      margin-bottom: 18px;
-    }
-
-    .hero-content p {
-      font-size: 1rem;
-      color: #4a5a6f;
-      max-width: 550px;
-      margin-bottom: 24px;
-    }
-
-    .hero-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      padding: 13px 24px;
-      border-radius: 50px;
-      font-weight: 600;
-      font-size: 0.95rem;
-      text-decoration: none;
-      transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-      border: 1px solid transparent;
-      cursor: pointer;
-      background: none;
-      color: white;
-      flex: 1 1 auto;
-      min-width: 140px;
-      text-align: center;
-    }
-
-    .btn-primary {
-      background: linear-gradient(145deg, #0066ff, #00b8ff);
-      box-shadow: 0 12px 30px -8px rgba(0, 102, 255, 0.4);
-    }
-
-    .btn-primary:hover,
-    .btn-primary:active {
-      transform: translateY(-3px) scale(1.02);
-      box-shadow: 0 22px 40px -8px rgba(0, 102, 255, 0.5);
-    }
-
-    .btn-outline {
-      border: 1px solid rgba(0, 102, 255, 0.3);
-      background: rgba(0, 102, 255, 0.04);
-      color: #0066ff;
-    }
-
-    .btn-outline:hover,
-    .btn-outline:active {
-      background: rgba(0, 102, 255, 0.1);
-      border-color: #0066ff;
-      transform: translateY(-3px);
-    }
-
-    .hero-visual {
-      flex: 1 1 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .terminal-card {
-      background: #ffffff;
-      border: 1px solid rgba(0, 102, 255, 0.15);
-      border-radius: 20px;
-      padding: 18px;
-      width: 100%;
-      max-width: 440px;
-      box-shadow: 0 30px 50px -15px rgba(0, 0, 0, 0.1);
-      animation: floatCard 6s ease-in-out infinite;
-    }
-
-    @keyframes floatCard {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
-    }
-
-    .terminal-header {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 14px;
-    }
-
-    .dot {
-      width: 11px;
-      height: 11px;
-      border-radius: 50%;
-      background: #d0d8e0;
-    }
-
-    .dot.red { background: #ff5f56; }
-    .dot.yellow { background: #ffbd2e; }
-    .dot.green { background: #27c93f; }
-
-    .terminal-line {
-      font-family: 'SF Mono', 'Fira Code', monospace;
-      font-size: 0.75rem;
-      color: #0066ff;
-      background: #f0f6ff;
-      padding: 9px 12px;
-      border-radius: 10px;
-      border-left: 3px solid #0066ff;
-      word-break: break-all;
-      margin-bottom: 10px;
-      overflow-wrap: break-word;
-    }
-
-    .terminal-line i {
-      color: #0066ff;
-      margin-right: 6px;
-    }
-
-    /* Section */
-    section {
-      padding: 50px 0;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.04);
-    }
-
-    .section-title {
-      font-size: 1.6rem;
-      font-weight: 700;
-      letter-spacing: -0.5px;
-      margin-bottom: 14px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      color: #1a2233;
-      flex-wrap: wrap;
-    }
-
-    .section-title i {
-      color: #0066ff;
-      font-size: 1.5rem;
-    }
-
-    .section-sub {
-      color: #6a7c8f;
-      max-width: 700px;
-      margin-bottom: 30px;
-      font-size: 0.95rem;
-    }
-
-    .grid-2 {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 18px;
-    }
-
-    .card {
-      background: #ffffff;
-      border: 1px solid rgba(0, 102, 255, 0.1);
-      border-radius: 18px;
-      padding: 22px;
-      transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-      position: relative;
-      overflow: hidden;
-      animation: cardReveal 0.7s ease-out;
-      animation-fill-mode: both;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
-    }
-
-    .card:nth-child(1) { animation-delay: 0.05s; }
-    .card:nth-child(2) { animation-delay: 0.1s; }
-    .card:nth-child(3) { animation-delay: 0.15s; }
-    .card:nth-child(4) { animation-delay: 0.2s; }
-
-    @keyframes cardReveal {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .card:hover {
-      transform: translateY(-6px);
-      border-color: rgba(0, 102, 255, 0.3);
-      box-shadow: 0 28px 40px -15px rgba(0, 102, 255, 0.15);
-    }
-
-    .card > i {
-      font-size: 1.6rem;
-      color: #0066ff;
-      margin-bottom: 14px;
-      background: rgba(0, 102, 255, 0.06);
-      width: 52px;
-      height: 52px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 14px;
-    }
-
-    .card h3 {
-      font-size: 1.15rem;
-      margin-bottom: 10px;
-      font-weight: 700;
-      color: #1a2233;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .card h3 i {
-      font-size: 1rem;
-      width: auto;
-      height: auto;
-      background: none;
-      margin: 0;
-      color: #0066ff;
-    }
-
-    .card p,
-    .card ul {
-      color: #4a5a6f;
-      font-size: 0.9rem;
-    }
-
-    .card ul {
-      list-style: none;
-      padding-left: 0;
-      margin-top: 8px;
-    }
-
-    .card ul li {
-      padding: 4px 0;
-      display: flex;
-      gap: 8px;
-      align-items: flex-start;
-      line-height: 1.5;
-      word-break: break-word;
-    }
-
-    .card ul li i {
-      font-size: 0.75rem;
-      width: auto;
-      height: auto;
-      background: none;
-      color: #0066ff;
-      margin: 0;
-      margin-top: 5px;
-      flex-shrink: 0;
-    }
-
-    .card ul li a,
-    .card p a {
-      color: #0066ff;
-      text-decoration: underline;
-      word-break: break-all;
-    }
-
-    code {
-      background: #f0f6ff;
-      color: #0066ff;
-      padding: 2px 6px;
-      border-radius: 5px;
-      font-family: 'SF Mono', 'Fira Code', monospace;
-      font-size: 0.82em;
-      word-break: break-all;
-    }
-
-    .code-block {
-      background: #f0f6ff;
-      border-radius: 12px;
-      padding: 14px;
-      border-left: 4px solid #0066ff;
-      font-family: 'SF Mono', 'Fira Code', monospace;
-      font-size: 0.75rem;
-      color: #0066ff;
-      overflow-x: auto;
-      white-space: pre-wrap;
-      word-break: break-all;
-      margin: 12px 0;
-      line-height: 1.7;
-      -webkit-overflow-scrolling: touch;
-    }
-
-    .code-block a {
-      color: #0066ff;
-      text-decoration: underline;
-    }
-
-    .menu-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 8px;
-      margin: 16px 0;
-    }
-
-    .menu-item {
-      background: rgba(0, 102, 255, 0.02);
-      border: 1px solid rgba(0, 102, 255, 0.12);
-      border-radius: 10px;
-      padding: 11px 14px;
-      font-size: 0.85rem;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      transition: all 0.2s;
-      color: #1a2233;
-      word-break: break-word;
-    }
-
-    .menu-item i {
-      color: #0066ff;
-      width: 18px;
-      text-align: center;
-      flex-shrink: 0;
-      font-size: 0.85rem;
-    }
-
-    .menu-item a {
-      color: #0066ff;
-      text-decoration: underline;
-      word-break: break-all;
-    }
-
-    .menu-item:hover,
-    .menu-item:active {
-      background: rgba(0, 102, 255, 0.06);
-      border-color: #0066ff;
-    }
-
-    .disclaimer {
-      background: rgba(255, 180, 0, 0.05);
-      border: 1px solid rgba(255, 180, 0, 0.25);
-      border-radius: 16px;
-      padding: 18px;
-      display: flex;
-      gap: 14px;
-      align-items: flex-start;
-      margin: 24px 0;
-    }
-
-    .disclaimer i {
-      font-size: 1.5rem;
-      color: #e6a800;
-      flex-shrink: 0;
-      margin-top: 2px;
-    }
-
-    .disclaimer p {
-      color: #7a5c00;
-      font-size: 0.88rem;
-    }
-
-    .info-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 12px;
-      margin-top: 16px;
-    }
-
-    .info-item {
-      background: #ffffff;
-      border: 1px solid rgba(0, 102, 255, 0.1);
-      border-radius: 12px;
-      padding: 14px;
-      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.02);
-    }
-
-    .info-item h4 {
-      color: #0066ff;
-      font-size: 0.72rem;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      margin-bottom: 5px;
-      font-weight: 700;
-    }
-
-    .info-item p {
-      color: #1a2233;
-      font-size: 0.85rem;
-      font-weight: 500;
-      word-break: break-all;
-      overflow-wrap: break-word;
-    }
-
-    .info-item a {
-      color: #0066ff;
-      text-decoration: underline;
-      word-break: break-all;
-    }
-
-    .preview-img {
-      width: 100%;
-      border-radius: 12px;
-      border: 1px solid rgba(0, 102, 255, 0.15);
-      margin-top: 12px;
-      box-shadow: 0 10px 30px -10px rgba(0, 102, 255, 0.15);
-      transition: transform 0.3s ease;
-    }
-
-    .preview-img:hover {
-      transform: scale(1.02);
-    }
-
-    .img-caption {
-      font-size: 0.75rem;
-      color: #8a9ab0;
-      text-align: center;
-      margin-top: 6px;
-      font-style: italic;
-    }
-
-    footer {
-      padding: 30px 0 24px;
-      text-align: center;
-      color: #6a7c8f;
-      font-size: 0.82rem;
-      border-top: 1px solid rgba(0, 0, 0, 0.04);
-      line-height: 1.8;
-    }
-
-    footer .heart {
-      color: #ff4d6d;
-      animation: heartbeat 1.5s infinite;
-      display: inline-block;
-    }
-
-    footer a {
-      color: #6a7c8f;
-      text-decoration: underline;
-      word-break: break-all;
-    }
-
-    @keyframes heartbeat {
-      0%, 100% { transform: scale(1); }
-      30% { transform: scale(1.2); }
-      60% { transform: scale(1); }
-    }
-
-    @keyframes fadeSlideDown {
-      from { opacity: 0; transform: translateY(-20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes fadeSlideUp {
-      from { opacity: 0; transform: translateY(30px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* ============ TABLET & DESKTOP ============ */
-    @media (min-width: 640px) {
-      .container { padding: 0 28px; }
-      .logo i { font-size: 2.5rem; }
-      .logo h1 { font-size: 1.8rem; }
-      .section-title { font-size: 1.9rem; }
-      .menu-grid { grid-template-columns: repeat(2, 1fr); }
-      .info-grid { grid-template-columns: repeat(2, 1fr); }
-      .hero-actions .btn { flex: 0 1 auto; }
-    }
-
-    @media (min-width: 900px) {
-      .container { padding: 0 32px; }
-      header { padding: 30px 0 10px; }
-      .logo i { font-size: 2.8rem; }
-      .logo h1 { font-size: 1.9rem; }
-      .hero { padding: 60px 0 50px; gap: 40px; }
-      .hero-content { flex: 1 1 500px; }
-      .hero-visual { flex: 1 1 380px; }
-      .hero-content h2 { letter-spacing: -2px; }
-      .hero-content p { font-size: 1.05rem; }
-      .section-title { font-size: 2.2rem; }
-      .section-title i { font-size: 2rem; }
-      .section-sub { font-size: 1.05rem; }
-      .grid-2 { grid-template-columns: repeat(2, 1fr); gap: 24px; }
-      .card { padding: 28px; border-radius: 24px; }
-      .card > i { width: 60px; height: 60px; font-size: 1.8rem; border-radius: 18px; }
-      .card h3 { font-size: 1.4rem; }
-      .card p, .card ul { font-size: 0.98rem; }
-      .code-block { font-size: 0.85rem; padding: 18px; border-radius: 16px; }
-      .menu-grid { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
-      .menu-item { padding: 14px 18px; font-size: 0.95rem; border-radius: 14px; }
-      .menu-item i { font-size: 1rem; width: 20px; }
-      .info-grid { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
-      .info-item { padding: 18px; border-radius: 16px; }
-      .info-item h4 { font-size: 0.85rem; }
-      .info-item p { font-size: 0.95rem; }
-      .disclaimer { padding: 24px; border-radius: 20px; gap: 18px; }
-      .disclaimer i { font-size: 2rem; }
-      .disclaimer p { font-size: 0.98rem; }
-      .terminal-card { padding: 24px; border-radius: 28px; }
-      .terminal-line { font-size: 0.85rem; padding: 10px 14px; }
-      .preview-img { border-radius: 16px; margin-top: 16px; }
-      .btn { padding: 14px 28px; font-size: 1rem; }
-      section { padding: 70px 0; }
-    }
-
-    /* Touch device tweaks */
-    @media (hover: none) {
-      .card:hover { transform: none; }
-      .btn-primary:hover { transform: none; }
-      .btn-outline:hover { transform: none; }
-      .preview-img:hover { transform: none; }
-      .menu-item:hover { background: rgba(0, 102, 255, 0.02); border-color: rgba(0, 102, 255, 0.12); }
-    }
-
-    /* Scrollbar */
-    ::-webkit-scrollbar { width: 8px; height: 8px; }
-    ::-webkit-scrollbar-track { background: #f0f6ff; }
-    ::-webkit-scrollbar-thumb { background: #b0c8e0; border-radius: 10px; }
-    ::-webkit-scrollbar-thumb:hover { background: #0066ff; }
-
-    .mt-4 { margin-top: 20px; }
-    .mb-2 { margin-bottom: 8px; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="IDM Activation Toolkit - Download from GitHub - Guides, Troubleshooting & Documentation for Internet Download Manager">
+    <title>🚀 IDM Activation — Toolkit & Guides</title>
+    <style>
+        /* ===== RESET & BASE ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #7C3AED;
+            --primary-light: #8B5CF6;
+            --primary-dark: #6D28D9;
+            --secondary: #EC4899;
+            --accent: #06B6D4;
+            --bg: #FFFFFF;
+            --bg-soft: #F8F7FF;
+            --bg-card: #FFFFFF;
+            --bg-card-hover: #FAFAFF;
+            --text: #1E1B4B;
+            --text-muted: #6B7280;
+            --border: #E5E7EB;
+            --border-light: #F3F4F6;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --danger: #EF4444;
+            --gradient: linear-gradient(135deg, #7C3AED 0%, #EC4899 100%);
+            --gradient-2: linear-gradient(135deg, #06B6D4 0%, #7C3AED 100%);
+            --shadow-sm: 0 2px 8px rgba(124, 58, 237, 0.08);
+            --shadow-md: 0 8px 30px rgba(124, 58, 237, 0.12);
+            --shadow-lg: 0 20px 60px rgba(124, 58, 237, 0.18);
+            --shadow-xl: 0 30px 80px rgba(124, 58, 237, 0.25);
+            --github: #24292F;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* ===== ANIMATED BACKGROUND BLOBS ===== */
+        .bg-blobs {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.4;
+            animation: blobFloat 20s ease-in-out infinite;
+        }
+
+        .blob-1 {
+            width: 500px;
+            height: 500px;
+            background: linear-gradient(135deg, #7C3AED, #EC4899);
+            top: -200px;
+            left: -200px;
+        }
+
+        .blob-2 {
+            width: 400px;
+            height: 400px;
+            background: linear-gradient(135deg, #06B6D4, #7C3AED);
+            top: 40%;
+            right: -150px;
+            animation-delay: 5s;
+        }
+
+        .blob-3 {
+            width: 350px;
+            height: 350px;
+            background: linear-gradient(135deg, #EC4899, #F59E0B);
+            bottom: -100px;
+            left: 30%;
+            animation-delay: 10s;
+        }
+
+        @keyframes blobFloat {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(50px, -50px) scale(1.1); }
+            66% { transform: translate(-50px, 50px) scale(0.9); }
+        }
+
+        /* ===== SCROLLBAR ===== */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: var(--bg-soft); }
+        ::-webkit-scrollbar-thumb {
+            background: var(--gradient);
+            border-radius: 5px;
+        }
+        ::-webkit-scrollbar-thumb:hover { background: var(--primary-dark); }
+
+        /* ===== NAVBAR ===== */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid transparent;
+            padding: 0 2rem;
+            transition: all 0.4s ease;
+        }
+
+        nav.scrolled {
+            background: rgba(255, 255, 255, 0.95);
+            border-bottom-color: var(--border);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 70px;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.3rem;
+            font-weight: 800;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+            transition: transform 0.3s;
+        }
+
+        .nav-logo:hover { transform: scale(1.05); }
+
+        .nav-logo img {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: color 0.3s;
+            position: relative;
+            padding: 5px 0;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background: var(--gradient);
+            transition: width 0.3s;
+            border-radius: 2px;
+        }
+
+        .nav-links a:hover { color: var(--primary); }
+        .nav-links a:hover::after { width: 100%; }
+
+        .nav-github-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 18px;
+            border-radius: 50px;
+            background: var(--github);
+            color: white !important;
+            font-weight: 700;
+            font-size: 0.85rem;
+            text-decoration: none;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(36, 41, 47, 0.3);
+        }
+
+        .nav-github-btn:hover {
+            background: #000;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(36, 41, 47, 0.5);
+        }
+
+        .nav-github-btn::after { display: none !important; }
+
+        .nav-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 100px 2rem 60px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+        }
+
+        .hero-icon-wrap {
+            display: inline-block;
+            position: relative;
+            margin-bottom: 2rem;
+        }
+
+        .hero-icon-wrap::before {
+            content: '';
+            position: absolute;
+            inset: -20px;
+            border-radius: 50%;
+            background: var(--gradient);
+            opacity: 0.2;
+            filter: blur(30px);
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        .hero-icon {
+            width: 110px;
+            height: 110px;
+            border-radius: 28px;
+            position: relative;
+            box-shadow: var(--shadow-xl);
+            animation: floatIcon 4s ease-in-out infinite;
+            background: white;
+            padding: 10px;
+        }
+
+        @keyframes floatIcon {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(3deg); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.2; }
+            50% { transform: scale(1.2); opacity: 0.35; }
+        }
+
+        .hero h1 {
+            font-size: clamp(2.2rem, 5vw, 4rem);
+            font-weight: 900;
+            margin-bottom: 1.2rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.15;
+            letter-spacing: -0.02em;
+        }
+
+        .hero p {
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            justify-content: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            border: 1px solid var(--border);
+            background: white;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: badgeIn 0.6s ease backwards;
+        }
+
+        .badge:nth-child(1) { animation-delay: 0.1s; }
+        .badge:nth-child(2) { animation-delay: 0.2s; }
+        .badge:nth-child(3) { animation-delay: 0.3s; }
+        .badge:nth-child(4) { animation-delay: 0.4s; }
+
+        @keyframes badgeIn {
+            from { opacity: 0; transform: translateY(20px) scale(0.8); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .badge:hover {
+            border-color: var(--primary);
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: var(--shadow-md);
+        }
+
+        .badge-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+            animation: dotPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes dotPulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.4); opacity: 0.6; }
+        }
+
+        .badge-dot.green { background: var(--success); }
+        .badge-dot.purple { background: var(--primary); }
+        .badge-dot.pink { background: var(--secondary); }
+        .badge-dot.cyan { background: var(--accent); }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeUp 0.8s ease 0.5s backwards;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 32px;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            border: none;
+            font-family: inherit;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background: var(--gradient);
+            color: white;
+            box-shadow: 0 8px 25px rgba(124, 58, 237, 0.35);
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn-primary:hover::before { left: 100%; }
+
+        .btn-primary:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 40px rgba(124, 58, 237, 0.5);
+        }
+
+        .btn-github {
+            background: var(--github);
+            color: white;
+            box-shadow: 0 8px 25px rgba(36, 41, 47, 0.35);
+        }
+
+        .btn-github:hover {
+            background: #000;
+            transform: translateY(-4px);
+            box-shadow: 0 15px 40px rgba(36, 41, 47, 0.55);
+        }
+
+        .btn-outline {
+            background: white;
+            color: var(--text);
+            border: 2px solid var(--border);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* ===== SECTIONS ===== */
+        section {
+            padding: 90px 2rem;
+            position: relative;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            font-weight: 900;
+            margin-bottom: 1rem;
+            text-align: center;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.02em;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto 3.5rem;
+            font-size: 1.05rem;
+        }
+
+        /* ===== ABOUT ===== */
+        .about-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .about-card {
+            background: white;
+            border: 1px solid var(--border-light);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .about-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s;
+        }
+
+        .about-card::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(124, 58, 237, 0.06) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .about-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+            border-color: transparent;
+        }
+
+        .about-card:hover::before { transform: scaleX(1); }
+        .about-card:hover::after { opacity: 1; }
+
+        .about-card .icon {
+            font-size: 2.2rem;
+            margin-bottom: 1rem;
+            display: inline-block;
+            transition: transform 0.4s;
+        }
+
+        .about-card:hover .icon {
+            transform: scale(1.2) rotate(-8deg);
+        }
+
+        .about-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .about-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ===== FEATURES TABLE ===== */
+        .features-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-light);
+        }
+
+        .features-table th {
+            background: var(--gradient);
+            padding: 1.2rem 1.5rem;
+            text-align: left;
+            font-weight: 800;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: white;
+        }
+
+        .features-table td {
+            padding: 1.1rem 1.5rem;
+            border-top: 1px solid var(--border-light);
+            font-size: 0.95rem;
+            transition: all 0.3s;
+        }
+
+        .features-table tr { transition: all 0.3s; }
+
+        .features-table tbody tr:hover td {
+            background: var(--bg-soft);
+            transform: scale(1.005);
+        }
+
+        .features-table td:first-child {
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        /* ===== SCREENSHOTS ===== */
+        .screenshots-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .screenshot-card {
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid var(--border-light);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            background: white;
+            box-shadow: var(--shadow-md);
+            position: relative;
+        }
+
+        .screenshot-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(236, 72, 153, 0.1));
+            opacity: 0;
+            transition: opacity 0.4s;
+            pointer-events: none;
+        }
+
+        .screenshot-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .screenshot-card:hover::after { opacity: 1; }
+
+        .screenshot-card img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.5s;
+        }
+
+        .screenshot-card:hover img { transform: scale(1.05); }
+
+        /* ===== STEPS ===== */
+        .steps {
+            display: grid;
+            gap: 1.5rem;
+            max-width: 750px;
+            margin: 0 auto;
+        }
+
+        .step {
+            display: flex;
+            gap: 1.5rem;
+            align-items: flex-start;
+            background: white;
+            border: 1px solid var(--border-light);
+            border-radius: 18px;
+            padding: 1.5rem 2rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: var(--shadow-sm);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .step::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: var(--gradient);
+            transform: scaleY(0);
+            transform-origin: top;
+            transition: transform 0.4s;
+        }
+
+        .step:hover {
+            border-color: transparent;
+            transform: translateX(10px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .step:hover::before { transform: scaleY(1); }
+
+        .step-number {
+            flex-shrink: 0;
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            background: var(--gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 1.2rem;
+            color: white;
+            box-shadow: 0 6px 20px rgba(124, 58, 237, 0.35);
+            transition: transform 0.4s;
+        }
+
+        .step:hover .step-number {
+            transform: scale(1.1) rotate(-8deg);
+        }
+
+        .step-content h4 {
+            font-size: 1.05rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .step-content p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .step-content a {
+            color: var(--primary);
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .step-content a:hover { text-decoration: underline; }
+
+        /* ===== TROUBLESHOOTING ===== */
+        .troubleshoot-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .troubleshoot-card {
+            background: white;
+            border: 1px solid var(--border-light);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: var(--shadow-sm);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .troubleshoot-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle, rgba(236, 72, 153, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            transform: translate(50%, -50%);
+            transition: transform 0.4s;
+        }
+
+        .troubleshoot-card:hover {
+            border-color: transparent;
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .troubleshoot-card:hover::before {
+            transform: translate(30%, -30%) scale(1.5);
+        }
+
+        .troubleshoot-card h3 {
+            font-size: 1.15rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .troubleshoot-list {
+            list-style: none;
+            display: grid;
+            gap: 0.6rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .troubleshoot-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            transition: transform 0.3s;
+        }
+
+        .troubleshoot-list li:hover {
+            transform: translateX(5px);
+            color: var(--text);
+        }
+
+        .troubleshoot-list li .check {
+            color: var(--success);
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .troubleshoot-list li .cross {
+            color: var(--danger);
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        /* ===== WARNING BOX ===== */
+        .warning-box {
+            background: linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%);
+            border: 1px solid #FDE68A;
+            border-radius: 18px;
+            padding: 1.5rem 2rem;
+            margin: 2rem 0;
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s;
+        }
+
+        .warning-box:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        .warning-box .icon {
+            font-size: 1.5rem;
+            flex-shrink: 0;
+            animation: iconBounce 2s ease-in-out infinite;
+        }
+
+        @keyframes iconBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .warning-box p {
+            color: #78350F;
+            font-size: 0.95rem;
+        }
+
+        .warning-box strong { color: #92400E; }
+
+        /* ===== INFO BOX ===== */
+        .info-box {
+            background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%);
+            border: 1px solid #BFDBFE;
+            border-radius: 18px;
+            padding: 1.5rem 2rem;
+            margin: 2rem 0;
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+
+        .info-box .icon {
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .info-box p { color: #1E3A8A; font-size: 0.95rem; }
+
+        /* ===== DOWNLOAD CARD (NEW) ===== */
+        .download-card {
+            background: linear-gradient(135deg, #FFFFFF 0%, #F8F7FF 100%);
+            border: 2px solid var(--border-light);
+            border-radius: 24px;
+            padding: 3rem 2rem;
+            text-align: center;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 3rem;
+        }
+
+        .download-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(124, 58, 237, 0.08) 0%, transparent 60%);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .download-card-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .download-card .github-logo {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 1.5rem;
+            filter: drop-shadow(0 10px 30px rgba(36, 41, 47, 0.3));
+            animation: floatIcon 4s ease-in-out infinite;
+        }
+
+        .download-card h3 {
+            font-size: 1.8rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .download-card p {
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .download-card .url-pill {
+            display: inline-block;
+            background: var(--bg-soft);
+            border: 1px solid var(--border);
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            color: var(--primary);
+            margin-bottom: 2rem;
+            word-break: break-all;
+            max-width: 100%;
+        }
+
+        .download-card .btn-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* ===== GITHUB CTA SECTION ===== */
+        .github-cta {
+            background: linear-gradient(135deg, #24292F 0%, #0D1117 100%);
+            border-radius: 24px;
+            padding: 3rem 2rem;
+            text-align: center;
+            color: white;
+            box-shadow: var(--shadow-xl);
+            position: relative;
+            overflow: hidden;
+            margin-top: 3rem;
+        }
+
+        .github-cta::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(124, 58, 237, 0.3) 0%, transparent 60%);
+            animation: rotate 15s linear infinite;
+        }
+
+        .github-cta-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .github-cta h3 {
+            font-size: 1.8rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+        }
+
+        .github-cta p {
+            color: #A5B4FC;
+            margin-bottom: 2rem;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .github-cta .btn-github {
+            background: white;
+            color: var(--github);
+            box-shadow: 0 8px 30px rgba(255, 255, 255, 0.3);
+        }
+
+        .github-cta .btn-github:hover {
+            background: #F3F4F6;
+            box-shadow: 0 15px 40px rgba(255, 255, 255, 0.5);
+            transform: translateY(-4px);
+        }
+
+        /* ===== FLOATING DOWNLOAD BUTTON ===== */
+        .floating-download {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            z-index: 998;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 22px;
+            border-radius: 50px;
+            background: var(--github);
+            color: white;
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-decoration: none;
+            box-shadow: 0 8px 30px rgba(36, 41, 47, 0.5);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: floatBtn 3s ease-in-out infinite;
+        }
+
+        @keyframes floatBtn {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .floating-download:hover {
+            background: #000;
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(36, 41, 47, 0.7);
+        }
+
+        .floating-download svg {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
+        }
+
+        /* ===== OS BADGES ===== */
+        .os-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .os-badge {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 26px;
+            border-radius: 14px;
+            background: white;
+            border: 2px solid var(--border-light);
+            font-weight: 700;
+            font-size: 0.95rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: var(--shadow-sm);
+            cursor: default;
+        }
+
+        .os-badge:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: translateY(-6px) scale(1.05);
+            box-shadow: var(--shadow-md);
+        }
+
+        .os-badge svg {
+            width: 22px;
+            height: 22px;
+            fill: var(--primary);
+            transition: transform 0.4s;
+        }
+
+        .os-badge:hover svg { transform: rotate(360deg); }
+
+        /* ===== CONTRIBUTORS ===== */
+        .contributors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .contributor-card {
+            background: white;
+            border: 1px solid var(--border-light);
+            border-radius: 20px;
+            padding: 2rem 1.5rem;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: var(--shadow-sm);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contributor-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient);
+            transform: scaleX(0);
+            transition: transform 0.4s;
+        }
+
+        .contributor-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+            border-color: transparent;
+        }
+
+        .contributor-card:hover::before { transform: scaleX(1); }
+
+        .contributor-avatar {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: var(--gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            margin: 0 auto 1rem;
+            font-weight: 900;
+            color: white;
+            box-shadow: 0 8px 25px rgba(124, 58, 237, 0.35);
+            transition: transform 0.4s;
+        }
+
+        .contributor-card:hover .contributor-avatar {
+            transform: scale(1.15) rotate(-8deg);
+        }
+
+        .contributor-card h4 {
+            font-size: 1.05rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .contributor-card p {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        /* ===== LINKS ===== */
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.2rem;
+        }
+
+        .link-card {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.4rem 1.5rem;
+            background: white;
+            border: 1px solid var(--border-light);
+            border-radius: 16px;
+            text-decoration: none;
+            color: var(--text);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: var(--shadow-sm);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .link-card::before {
+            content: '→';
+            position: absolute;
+            right: 1.5rem;
+            top: 50%;
+            transform: translateY(-50%) translateX(-10px);
+            font-size: 1.5rem;
+            color: var(--primary);
+            opacity: 0;
+            transition: all 0.4s;
+            font-weight: 900;
+        }
+
+        .link-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+            padding-right: 3.5rem;
+        }
+
+        .link-card:hover::before {
+            opacity: 1;
+            transform: translateY(-50%) translateX(0);
+        }
+
+        .link-card .link-icon {
+            font-size: 1.8rem;
+            flex-shrink: 0;
+            transition: transform 0.4s;
+        }
+
+        .link-card:hover .link-icon {
+            transform: scale(1.2) rotate(-8deg);
+        }
+
+        .link-card .link-text h4 {
+            font-size: 0.95rem;
+            margin-bottom: 0.15rem;
+        }
+
+        .link-card .link-text p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            word-break: break-all;
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            background: linear-gradient(135deg, #1E1B4B 0%, #312E81 100%);
+            color: white;
+            padding: 4rem 2rem 3rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient);
+        }
+
+        .footer-content {
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-heart {
+            font-size: 1.1rem;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+        }
+
+        .footer-heart .heart {
+            color: var(--secondary);
+            animation: heartbeat 1.5s ease-in-out infinite;
+            display: inline-block;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            25% { transform: scale(1.3); }
+            50% { transform: scale(1); }
+            75% { transform: scale(1.2); }
+        }
+
+        .footer-link {
+            color: #A5B4FC;
+            text-decoration: none;
+            font-weight: 700;
+            transition: all 0.3s;
+            display: inline-block;
+            padding: 8px 20px;
+            border-radius: 50px;
+            border: 1px solid rgba(165, 180, 252, 0.3);
+            margin-top: 0.5rem;
+        }
+
+        .footer-link:hover {
+            color: white;
+            border-color: var(--primary-light);
+            background: rgba(139, 92, 246, 0.2);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(124, 58, 237, 0.4);
+        }
+
+        .footer-tagline {
+            color: #A5B4FC;
+            font-size: 0.85rem;
+            margin-top: 1rem;
+            font-style: italic;
+        }
+
+        .footer-divider {
+            width: 80px;
+            height: 3px;
+            background: var(--gradient);
+            border-radius: 3px;
+            margin: 1.5rem auto;
+        }
+
+        .star-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #C7D2FE;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+            padding: 10px 20px;
+            border-radius: 50px;
+            background: rgba(139, 92, 246, 0.15);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        .star-cta:hover {
+            background: rgba(139, 92, 246, 0.3);
+            transform: translateY(-3px);
+            color: white;
+        }
+
+        /* ===== FADE IN ANIMATION ===== */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), 
+                        transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ===== BACK TO TOP ===== */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: var(--gradient);
+            color: white;
+            border: none;
+            font-size: 1.4rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 8px 30px rgba(124, 58, 237, 0.45);
+            z-index: 999;
+            font-weight: 900;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            transform: translateY(-6px) scale(1.1);
+            box-shadow: 0 15px 40px rgba(124, 58, 237, 0.6);
+        }
+
+        /* ===== SCROLL PROGRESS BAR ===== */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: var(--gradient);
+            z-index: 1001;
+            width: 0%;
+            transition: width 0.1s;
+            box-shadow: 0 0 10px rgba(124, 58, 237, 0.5);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 900px) {
+            .nav-links {
+                position: fixed;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background: rgba(255, 255, 255, 0.98);
+                backdrop-filter: blur(20px);
+                flex-direction: column;
+                padding: 2rem;
+                gap: 1.5rem;
+                border-bottom: 1px solid var(--border);
+                transform: translateY(-120%);
+                transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                text-align: center;
+                box-shadow: var(--shadow-lg);
+            }
+
+            .nav-links.open { transform: translateY(0); }
+
+            .nav-toggle { display: block; }
+
+            .hero {
+                min-height: 90vh;
+                padding: 90px 1.5rem 50px;
+            }
+
+            .hero-icon {
+                width: 90px;
+                height: 90px;
+            }
+
+            section { padding: 70px 1.5rem; }
+
+            .features-table th,
+            .features-table td {
+                padding: 0.8rem 1rem;
+                font-size: 0.85rem;
+            }
+
+            .step { padding: 1.25rem; }
+
+            .back-to-top {
+                bottom: 20px;
+                right: 20px;
+                width: 46px;
+                height: 46px;
+            }
+
+            .floating-download {
+                bottom: 80px;
+                right: 20px;
+                padding: 10px 16px;
+                font-size: 0.8rem;
+            }
+
+            .blob { opacity: 0.25; }
+        }
+
+        @media (max-width: 480px) {
+            .hero-buttons {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .features-table td:first-child {
+                white-space: normal;
+            }
+
+            .step {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .step:hover { transform: translateY(-5px); }
+
+            .download-card .btn-group {
+                flex-direction: column;
+            }
+
+            .download-card .btn-group .btn {
+                width: 100%;
+            }
+
+            .floating-download {
+                bottom: 75px;
+                right: 15px;
+                padding: 8px 14px;
+                font-size: 0.75rem;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="bg-glow"></div>
-  <div class="grid-overlay"></div>
 
-  <div class="container">
-    <!-- Header -->
-    <header>
-      <div class="logo">
-        <i class="fas fa-bolt"></i>
-        <div>
-          <h1>IDM Activator</h1>
-          <span>Open Source Community</span>
-        </div>
-      </div>
-      <div class="badge">
-        <i class="fas fa-code-branch"></i> v4.0 · 2025-10-26
-      </div>
-    </header>
+    <!-- ===== SCROLL PROGRESS BAR ===== -->
+    <div class="progress-bar" id="progressBar"></div>
 
-    <!-- Hero -->
-    <div class="hero">
-      <div class="hero-content">
-        <div class="eyebrow">
-          <i class="fas fa-shield-hal"></i> Registry & File Replacement
-        </div>
-        <h2>Activate IDM<br>Like a Pro.</h2>
-        <p>Advanced registry manipulation, trial reset, and file replacement — all in one powerful script. Built by the community, for educational purposes.</p>
-        <div class="hero-actions">
-          <a href="https://github.com/iemabdullah/IDM-Activator" target="_blank" rel="noopener" class="btn btn-primary">
-            <i class="fab fa-github"></i> GitHub
-          </a>
-          <a href="#usage" class="btn btn-outline">
-            <i class="fas fa-arrow-down"></i> How to use
-          </a>
-        </div>
-      </div>
-      <div class="hero-visual">
-        <div class="terminal-card">
-          <div class="terminal-header">
-            <div class="dot red"></div>
-            <div class="dot yellow"></div>
-            <div class="dot green"></div>
-          </div>
-          <div class="terminal-line">
-            <i class="fas fa-angle-right"></i> irm https://raw.githubusercontent.com/.../install.ps1 | iex
-          </div>
-          <div class="terminal-line">
-            <i class="fas fa-check-circle" style="color:#27c93f;"></i> Elevating privileges...
-          </div>
-          <div class="terminal-line">
-            <i class="fas fa-check-circle" style="color:#27c93f;"></i> Registry keys locked.
-          </div>
-          <div class="terminal-line">
-            <i class="fas fa-check-circle" style="color:#27c93f;"></i> IDM activated.
-          </div>
-        </div>
-      </div>
+    <!-- ===== ANIMATED BACKGROUND BLOBS ===== -->
+    <div class="bg-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
     </div>
 
-    <!-- Screenshots -->
-    <section id="preview">
-      <div class="section-title">
-        <i class="fas fa-image"></i> Screenshots
-      </div>
-      <div class="section-sub">Visual previews of the IDM Activator menu and activation process.</div>
-      <div class="grid-2">
-        <div class="card">
-          <h3><i class="fas fa-list"></i> Main Menu</h3>
-          <img src="https://github.com/user-attachments/assets/d516aba3-b682-4794-90c5-be8560cf4546" 
-               alt="IDM Activator Menu" 
-               class="preview-img"
-               loading="lazy"
-               onerror="this.src='https://placehold.co/516x427/0066ff/white?text=IDM+Activator+Menu'">
-          <p class="img-caption">IDM Activator main menu interface</p>
+    <!-- ===== NAVBAR ===== -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <a href="#" class="nav-logo">
+                <img src="https://www.internetdownloadmanager.com/images/idm_icon.png" alt="IDM">
+                IDM Activation
+            </a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#about">About</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#download">Download</a></li>
+                <li><a href="#troubleshooting">Troubleshooting</a></li>
+                <li><a href="#links">Links</a></li>
+                <li>
+                    <a href="https://github.com/iemabdullah/IDM-Activation-Upadte" target="_blank" rel="noopener" class="nav-github-btn">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+                        GitHub
+                    </a>
+                </li>
+            </ul>
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">☰</button>
         </div>
-        <div class="card">
-          <h3><i class="fas fa-cog"></i> Activation Process</h3>
-          <img src="https://placehold.co/516x427/f0f6ff/0066ff?text=Activation+Process" 
-               alt="Activation Process" 
-               class="preview-img"
-               loading="lazy">
-          <p class="img-caption">Activation process in action</p>
+    </nav>
+
+    <!-- ===== HERO ===== -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-icon-wrap">
+                <img src="https://www.internetdownloadmanager.com/images/idm_icon.png" alt="Internet Download Manager" class="hero-icon">
+            </div>
+            <h1>🚀 IDM Activation Toolkit</h1>
+            <p>
+                A community-focused project for Internet Download Manager information, 
+                setup guides, browser integration help, and troubleshooting.
+            </p>
+            <div class="hero-badges">
+                <span class="badge"><span class="badge-dot green"></span> Windows 7–11</span>
+                <span class="badge"><span class="badge-dot purple"></span> Documentation</span>
+                <span class="badge"><span class="badge-dot pink"></span> Open Source</span>
+                <span class="badge"><span class="badge-dot cyan"></span> Community</span>
+            </div>
+            <div class="hero-buttons">
+                <a href="https://github.com/iemabdullah/IDM-Activation-Upadte" target="_blank" rel="noopener" class="btn btn-github">
+                    <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+                    Download from GitHub
+                </a>
+                <a href="#troubleshooting" class="btn btn-outline">🛠️ Troubleshooting</a>
+            </div>
         </div>
-      </div>
     </section>
 
-    <!-- How it works -->
-    <section id="how">
-      <div class="section-title">
-        <i class="fas fa-cogs"></i> How it works
-      </div>
-      <div class="section-sub">The script modifies Windows registry and simulates legitimate usage to bypass activation.</div>
-      <div class="grid-2">
-        <div class="card">
-          <i class="fas fa-registered"></i>
-          <h3>Registry Modification</h3>
-          <p>Directly edits <code>HKCU\Software\DownloadManager</code> to inject fake registration details and lock keys.</p>
+    <!-- ===== ABOUT ===== -->
+    <section id="about" style="background: var(--bg-soft);">
+        <div class="container">
+            <h2 class="section-title fade-in">🌟 About</h2>
+            <p class="section-subtitle fade-in">
+                Internet Download Manager (IDM) is a Windows download-management application 
+                designed to improve download organization, scheduling, browser integration, 
+                and download reliability.
+            </p>
+            <div class="about-grid">
+                <div class="about-card fade-in">
+                    <div class="icon">📚</div>
+                    <h3>Setup Information</h3>
+                    <p>IDM setup and installation guidance for Windows users.</p>
+                </div>
+                <div class="about-card fade-in">
+                    <div class="icon">🛠️</div>
+                    <h3>Troubleshooting</h3>
+                    <p>Common IDM issues and their solutions.</p>
+                </div>
+                <div class="about-card fade-in">
+                    <div class="icon">🌐</div>
+                    <h3>Browser Integration</h3>
+                    <p>Help with Chrome, Firefox, Edge and other browsers.</p>
+                </div>
+                <div class="about-card fade-in">
+                    <div class="icon">🔄</div>
+                    <h3>Update Information</h3>
+                    <p>Keep your IDM up to date with the latest releases.</p>
+                </div>
+                <div class="about-card fade-in">
+                    <div class="icon">💡</div>
+                    <h3>Configuration Tips</h3>
+                    <p>Optimize IDM settings for better performance.</p>
+                </div>
+                <div class="about-card fade-in">
+                    <div class="icon">📖</div>
+                    <h3>Community Docs</h3>
+                    <p>Guides and technical information from the community.</p>
+                </div>
+            </div>
+            <div class="warning-box fade-in">
+                <span class="icon">⚠️</span>
+                <p>
+                    <strong>Disclaimer:</strong> This project is not affiliated with or endorsed by 
+                    Internet Download Manager / Tonec Inc. All trademarks belong to their respective owners.
+                </p>
+            </div>
         </div>
-        <div class="card">
-          <i class="fas fa-redo-alt"></i>
-          <h3>Trial Reset</h3>
-          <p>Clears existing registration data, resetting the trial period to 30 days.</p>
-        </div>
-        <div class="card">
-          <i class="fas fa-user-secret"></i>
-          <h3>Fake Registration</h3>
-          <p>Inserts name <strong>@Open Source Community</strong>, email <strong>info@tonec.com</strong>, serial <strong>FOX6H-3KWH4-7TSIN-Q4US7</strong>.</p>
-        </div>
-        <div class="card">
-          <i class="fas fa-download"></i>
-          <h3>Download Simulation</h3>
-          <p>Downloads files from IDM's official website to trigger registry key creation naturally.</p>
-        </div>
-      </div>
     </section>
 
-    <!-- Technical Details -->
-    <section id="technical">
-      <div class="section-title">
-        <i class="fas fa-microchip"></i> Technical Details
-      </div>
-      <div class="section-sub">What the script does under the hood.</div>
-      <div class="grid-2">
-        <div class="card">
-          <i class="fas fa-user-shield"></i>
-          <h3>Elevation & Process</h3>
-          <ul>
-            <li><i class="fas fa-check"></i> Elevates to Administrator</li>
-            <li><i class="fas fa-check"></i> Kills IDM process</li>
-            <li><i class="fas fa-check"></i> Deletes existing registry keys</li>
-            <li><i class="fas fa-check"></i> Adds fake registration details</li>
-          </ul>
+    <!-- ===== FEATURES ===== -->
+    <section id="features">
+        <div class="container">
+            <h2 class="section-title fade-in">✨ Features</h2>
+            <p class="section-subtitle fade-in">What this toolkit covers</p>
+            <table class="features-table fade-in">
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>⚡ Download Management</td>
+                        <td>Organize and manage downloads efficiently</td>
+                    </tr>
+                    <tr>
+                        <td>🌐 Browser Integration</td>
+                        <td>Integration troubleshooting for supported browsers</td>
+                    </tr>
+                    <tr>
+                        <td>📅 Scheduling</td>
+                        <td>Information about download scheduling</td>
+                    </tr>
+                    <tr>
+                        <td>🔄 Updates</td>
+                        <td>Keep IDM up to date</td>
+                    </tr>
+                    <tr>
+                        <td>🛠️ Troubleshooting</td>
+                        <td>Common IDM issues and solutions</td>
+                    </tr>
+                    <tr>
+                        <td>📚 Documentation</td>
+                        <td>Guides and technical information</td>
+                    </tr>
+                    <tr>
+                        <td>🖥️ Windows Support</td>
+                        <td>Information for supported Windows versions</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-        <div class="card">
-          <i class="fas fa-shield-alt"></i>
-          <h3>Security Features</h3>
-          <ul>
-            <li><i class="fas fa-check"></i> Checks Windows version compatibility</li>
-            <li><i class="fas fa-check"></i> Verifies PowerShell availability</li>
-            <li><i class="fas fa-check"></i> Implements error handling & recovery</li>
-            <li><i class="fas fa-check"></i> Locks registry keys to prevent detection</li>
-          </ul>
-        </div>
-      </div>
-      <div class="info-grid mt-4">
-        <div class="info-item">
-          <h4>Registry Path</h4>
-          <p>HKCU\Software\DownloadManager</p>
-        </div>
-        <div class="info-item">
-          <h4>Fake Name</h4>
-          <p>@Open Source Community</p>
-        </div>
-        <div class="info-item">
-          <h4>Fake Email</h4>
-          <p>info@tonec.com</p>
-        </div>
-        <div class="info-item">
-          <h4>Fake Serial</h4>
-          <p>FOX6H-3KWH4-7TSIN-Q4US7</p>
-        </div>
-      </div>
     </section>
 
-    <!-- Activation Methods -->
-    <section id="methods">
-      <div class="section-title">
-        <i class="fas fa-layer-group"></i> Activation Methods
-      </div>
-      <div class="section-sub">Choose between registry-based or file replacement approach.</div>
-      <div class="grid-2">
-        <div class="card">
-          <i class="fas fa-key"></i>
-          <h3>Registry Method</h3>
-          <p>Classic approach: modifies registry, locks keys, and simulates downloads.</p>
-          <ul>
-            <li><i class="fas fa-check"></i> Resets trial</li>
-            <li><i class="fas fa-check"></i> Applies fake serial</li>
-            <li><i class="fas fa-check"></i> Locks registry keys</li>
-          </ul>
-          <div class="code-block">IDM_Activator.cmd /act</div>
+    <!-- ===== SCREENSHOTS ===== -->
+    <section id="screenshots" style="background: var(--bg-soft);">
+        <div class="container">
+            <h2 class="section-title fade-in">🖼️ Screenshots</h2>
+            <p class="section-subtitle fade-in">Visual guides and previews</p>
+            <div class="screenshots-grid">
+                <div class="screenshot-card fade-in">
+                    <img src="https://github.com/lstprjct/IDM-Activation-Upadate/assets/88411318/fafdb481-c497-464f-b1e6-9a4254eaf880" 
+                         alt="IDM Toolkit Screenshot" loading="lazy">
+                </div>
+                <div class="screenshot-card fade-in">
+                    <img src="https://github.com/lstprjct/IDM-Activation-Upadate/assets/88411318/76b36582-8cf4-4d1e-870f-6e8e57c80a87" 
+                         alt="IDM Screenshot" loading="lazy">
+                </div>
+            </div>
         </div>
-        <div class="card">
-          <i class="fas fa-file-code"></i>
-          <h3>File Replacement</h3>
-          <p>Replaces <code>IDMan.exe</code> and <code>IDMGrHlp.exe</code> with modified versions.</p>
-          <ul>
-            <li><i class="fas fa-check"></i> Automatic backup</li>
-            <li><i class="fas fa-check"></i> Requires data.bin & dataHlp.bin</li>
-            <li><i class="fas fa-check"></i> Custom registration</li>
-          </ul>
-          <div class="code-block">IDM_Activator.cmd /act /file</div>
-        </div>
-      </div>
-      <div class="card mt-4">
-        <i class="fas fa-file-archive"></i>
-        <h3>Required Files</h3>
-        <div class="menu-grid">
-          <div class="menu-item"><i class="fas fa-file"></i> <a href="file:///c%3A/Users/rehan/Desktop/IDM_Activator/data.bin">data.bin</a> (replaces IDMan.exe)</div>
-          <div class="menu-item"><i class="fas fa-file"></i> <a href="file:///c%3A/Users/rehan/Desktop/IDM_Activator/dataHlp.bin">dataHlp.bin</a> (replaces IDMGrHlp.exe)</div>
-          <div class="menu-item"><i class="fas fa-file"></i> <a href="file:///c%3A/Users/rehan/Desktop/IDM_Activator/registry.bin">registry.bin</a> (optional)</div>
-        </div>
-      </div>
-      <div class="card mt-4">
-        <i class="fas fa-file-code"></i>
-        <h3>Replaced Executables</h3>
-        <div class="menu-grid">
-          <div class="menu-item"><i class="fas fa-file-exe"></i> <a href="file:///c%3A/Users/rehan/Desktop/IDM_Activator/IDMan.exe">IDMan.exe</a></div>
-          <div class="menu-item"><i class="fas fa-file-exe"></i> <a href="file:///c%3A/Users/rehan/Desktop/IDM_Activator/IDMGrHlp.exe">IDMGrHlp.exe</a></div>
-        </div>
-      </div>
     </section>
 
-    <!-- Usage Guide -->
-    <section id="usage">
-      <div class="section-title">
-        <i class="fas fa-play-circle"></i> Usage Guide
-      </div>
-      <div class="section-sub">Run as Administrator and follow the menu.</div>
-      <div class="grid-2">
-        <div class="card">
-          <i class="fas fa-terminal"></i>
-          <h3>Quick Start</h3>
-          <div class="code-block"># PowerShell (Admin)<br>irm https://raw.githubusercontent.com/iemabdullah/IDM-Activator/refs/heads/main/install.ps1 | iex</div>
-          <p>Or download <strong>IDM_Activator.cmd</strong> and run as admin.</p>
+    <!-- ===== DOWNLOAD (UPDATED - GITHUB LINK EVERYWHERE) ===== -->
+    <section id="download">
+        <div class="container">
+            <h2 class="section-title fade-in">📥 Download IDM Toolkit</h2>
+            <p class="section-subtitle fade-in">
+                Get the latest IDM Toolkit directly from GitHub
+            </p>
+
+            <!-- MAIN DOWNLOAD CARD -->
+            <div class="download-card fade-in">
+                <div class="download-card-content">
+                    <svg class="github-logo" viewBox="0 0 16 16" fill="#24292F">
+                        <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+                    </svg>
+                    <h3>Download from GitHub</h3>
+                    <p>All files, scripts, and documentation are available on our GitHub repository.</p>
+                    <div class="url-pill">
+                        github.com/iemabdullah/IDM-Activation-Upadte
+                    </div>
+                    <div class="btn-group">
+                        <a href="https://github.com/iemabdullah/IDM-Activation-Upadte" target="_blank" rel="noopener" class="btn btn-github">
+                            <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+                            Open Repository
+                        </a>
+                        <a href="https://github.com/iemabdullah/IDM-Activation-Upadte/archive/refs/heads/main.zip" target="_blank" rel="noopener" class="btn btn-primary">
+                            ⬇️ Download ZIP
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- STEPS WITH GITHUB LINK -->
+            <h3 style="text-align:center; font-size:1.4rem; margin-bottom:2rem; color:var(--text);" class="fade-in">
+                📋 Recommended Setup Steps
+            </h3>
+            <div class="steps">
+                <div class="step fade-in">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h4>Visit GitHub Repository</h4>
+                        <p>Go to <a href="https://github.com/iemabdullah/IDM-Activation-Upadte" target="_blank" rel="noopener">github.com/iemabdullah/IDM-Activation-Upadte</a></p>
+                    </div>
+                </div>
+                <div class="step fade-in">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h4>Download the Files</h4>
+                        <p>Click the green "Code" button → Download ZIP, or <a href="https://github.com/iemabdullah/IDM-Activation-Upadte/archive/refs/heads/main.zip" target="_blank" rel="noopener">download directly</a>.</p>
+                    </div>
+                </div>
+                <div class="step fade-in">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h4>Extract & Review</h4>
+                        <p>Extract the ZIP file and review the scripts (IAS.cmd / IAS.ps1) and README.md.</p>
+                    </div>
+                </div>
+                <div class="step fade-in">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h4>Download Official IDM</h4>
+                        <p>Get IDM from <a href="https://www.internetdownloadmanager.com/" target="_blank" rel="noopener">internetdownloadmanager.com</a></p>
+                    </div>
+                </div>
+                <div class="step fade-in">
+                    <div class="step-number">5</div>
+                    <div class="step-content">
+                        <h4>Keep Everything Updated</h4>
+                        <p>Star & watch the <a href="https://github.com/iemabdullah/IDM-Activation-Upadte" target="_blank" rel="noopener">GitHub repo</a> for latest updates.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- GITHUB CTA BANNER -->
+            <div class="github-cta fade-in">
+                <div class="github-cta-content">
+                    <h3>⭐ Star us on GitHub!</h3>
+                    <p>If this project helped you, consider giving it a star — it really motivates us!</p>
+                    <a href="https://github.com/iemabdullah/IDM-Activation-Upadte" target="_blank" rel="noopener" class="btn btn-github">
+                        <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 .25a.75.75 0 01.673.418l1.882 3.815 4.21.612a.75.75 0 01.416 1.279l-3.046 2.97.719 4.192a.75.75 0 01-1.088.791L8 12.347l-3.766 1.98a.75.75 0 01-1.088-.79l.72-4.194L.818 6.374a.75.75 0 01.416-1.28l4.21-.611L7.327.668A.75.75 0 018 .25z"/></svg>
+                        Star on GitHub
+                    </a>
+                </div>
+            </div>
         </div>
-        <div class="card">
-          <i class="fas fa-list"></i>
-          <h3>Main Menu</h3>
-          <div class="menu-grid">
-            <div class="menu-item"><i class="fas fa-check-circle"></i> [1] Registry Activation</div>
-            <div class="menu-item"><i class="fas fa-file"></i> [2] File Replacement</div>
-            <div class="menu-item"><i class="fas fa-undo"></i> [3] Reset Trial</div>
-            <div class="menu-item"><i class="fas fa-info-circle"></i> [4] Check Version</div>
-            <div class="menu-item"><i class="fas fa-download"></i> [5] Download Latest</div>
-            <div class="menu-item"><i class="fas fa-shield"></i> [6] Check Status</div>
-            <div class="menu-item"><i class="fas fa-fire"></i> [7] Toggle Firewall</div>
-            <div class="menu-item"><i class="fas fa-book"></i> [8] ReadMe</div>
-            <div class="menu-item"><i class="fas fa-globe"></i> [9] Homepage</div>
-            <div class="menu-item"><i class="fas fa-sign-out-alt"></i> [0] Exit</div>
-          </div>
-        </div>
-      </div>
-      <div class="card mt-4">
-        <i class="fas fa-cog"></i>
-        <h3>Command Line Options</h3>
-        <div class="code-block">
-          IDM_Activator.cmd /act          # activate silently<br>
-          IDM_Activator.cmd /res /s       # reset silently<br>
-          IDM_Activator.cmd -el           # elevate privileges
-        </div>
-      </div>
     </section>
 
-    <!-- Installation Methods -->
-    <section id="installation">
-      <div class="section-title">
-        <i class="fas fa-download"></i> Installation Methods
-      </div>
-      <div class="section-sub">Multiple ways to get started.</div>
-      <div class="grid-2">
-        <div class="card">
-          <i class="fab fa-powershell"></i>
-          <h3>Method 1: PowerShell</h3>
-          <div class="code-block">irm https://raw.githubusercontent.com/iemabdullah/IDM-Activator/refs/heads/main/install.ps1 | iex</div>
-          <p>Troubleshooting: <code>Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass</code></p>
+    <!-- ===== BROWSER INTEGRATION ===== -->
+    <section id="browser" style="background: var(--bg-soft);">
+        <div class="container">
+            <h2 class="section-title fade-in">🌐 Browser Integration</h2>
+            <p class="section-subtitle fade-in">
+                If IDM is installed but downloads are not being captured correctly, 
+                check the browser integration settings.
+            </p>
+            <div class="troubleshoot-grid">
+                <div class="troubleshoot-card fade-in">
+                    <h3>🌐 Google Chrome</h3>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">
+                        Official IDM troubleshooting for Chrome integration.
+                    </p>
+                    <a href="https://www.internetdownloadmanager.com/register/new_faq/bi9.html" 
+                       target="_blank" rel="noopener" class="btn btn-outline" style="font-size: 0.85rem; padding: 10px 20px;">
+                        🔗 Chrome Help
+                    </a>
+                </div>
+                <div class="troubleshoot-card fade-in">
+                    <h3>🦊 Mozilla Firefox</h3>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">
+                        Official IDM troubleshooting for Firefox integration.
+                    </p>
+                    <a href="https://www.internetdownloadmanager.com/register/new_faq/bi4.html" 
+                       target="_blank" rel="noopener" class="btn btn-outline" style="font-size: 0.85rem; padding: 10px 20px;">
+                        🔗 Firefox Help
+                    </a>
+                </div>
+            </div>
         </div>
-        <div class="card">
-          <i class="fas fa-download"></i>
-          <h3>Method 2: Manual Download</h3>
-          <ul>
-            <li><i class="fas fa-check"></i> <a href="https://github.com/iemabdullah/IDM-Activator/releases/" target="_blank" rel="noopener">Download from releases page</a></li>
-            <li><i class="fas fa-check"></i> Direct: <a href="https://raw.githubusercontent.com/iemabdullah/IDM-Activator/refs/heads/main/IDM_Activator.cmd" target="_blank" rel="noopener">IDM_Activator.cmd</a></li>
-          </ul>
-        </div>
-        <div class="card">
-          <i class="fas fa-rocket"></i>
-          <h3>Method 3: Launcher</h3>
-          <ul>
-            <li><i class="fas fa-check"></i> Download <a href="https://raw.githubusercontent.com/iemabdullah/IDM-Activator/refs/heads/main/IASL.cmd" target="_blank" rel="noopener">IASL.cmd</a></li>
-            <li><i class="fas fa-check"></i> Right-click → Run as administrator</li>
-          </ul>
-        </div>
-        <div class="card">
-          <i class="fab fa-windows"></i>
-          <h3>Method 4: Script</h3>
-          <ul>
-            <li><i class="fas fa-check"></i> Download <a href="https://raw.githubusercontent.com/iemabdullah/IDM-Activator/main/install.ps1" target="_blank" rel="noopener">install.ps1</a></li>
-            <li><i class="fas fa-check"></i> Right-click → Run with PowerShell</li>
-            <li><i class="fas fa-check"></i> Allow UAC prompt</li>
-          </ul>
-        </div>
-      </div>
     </section>
 
-    <!-- Troubleshooting -->
-    <section id="troubleshoot">
-      <div class="section-title">
-        <i class="fas fa-wrench"></i> Troubleshooting
-      </div>
-      <div class="grid-2">
-        <div class="card">
-          <i class="fas fa-exclamation-triangle"></i>
-          <h3>Common Issues</h3>
-          <ul>
-            <li><i class="fas fa-times-circle"></i> <strong>Requires Admin:</strong> Run as administrator</li>
-            <li><i class="fas fa-times-circle"></i> <strong>IDM Not Installed:</strong> Install IDM first</li>
-            <li><i class="fas fa-times-circle"></i> <strong>Activation fails:</strong> Reset trial (option 3) then retry</li>
-            <li><i class="fas fa-times-circle"></i> <strong>File replacement fails:</strong> Ensure data.bin & dataHlp.bin present</li>
-            <li><i class="fas fa-times-circle"></i> <strong>Fake Serial Error:</strong> Run reset then re-run activation</li>
-          </ul>
+    <!-- ===== TROUBLESHOOTING ===== -->
+    <section id="troubleshooting">
+        <div class="container">
+            <h2 class="section-title fade-in">🛠️ Troubleshooting</h2>
+            <p class="section-subtitle fade-in">Common IDM issues and solutions</p>
+            <div class="troubleshoot-grid">
+                <div class="troubleshoot-card fade-in">
+                    <h3>🔍 IDM Not Appearing in Browser</h3>
+                    <ul class="troubleshoot-list">
+                        <li><span class="check">✅</span> Restart IDM</li>
+                        <li><span class="check">✅</span> Restart the browser</li>
+                        <li><span class="check">✅</span> Check IDM browser integration settings</li>
+                        <li><span class="check">✅</span> Check the IDM browser extension</li>
+                        <li><span class="check">✅</span> Update IDM to latest version</li>
+                        <li><span class="check">✅</span> Update your browser</li>
+                        <li><span class="check">✅</span> Reinstall official IDM version if needed</li>
+                    </ul>
+                </div>
+                <div class="troubleshoot-card fade-in">
+                    <h3>🔑 Activation / License Message</h3>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">
+                        Use the <strong style="color: var(--warning);">official IDM licensing and registration options</strong> 
+                        provided by the developer.
+                    </p>
+                    <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 0.5rem;">
+                        Avoid unofficial patches or modified executables because they can cause:
+                    </p>
+                    <ul class="troubleshoot-list">
+                        <li><span class="cross">❌</span> Fake serial-number errors</li>
+                        <li><span class="cross">❌</span> Malware / security risks</li>
+                        <li><span class="cross">❌</span> Broken browser integration</li>
+                        <li><span class="cross">❌</span> Update problems</li>
+                        <li><span class="cross">❌</span> Unexpected registry modifications</li>
+                    </ul>
+                </div>
+            </div>
         </div>
-        <div class="card">
-          <i class="fas fa-tools"></i>
-          <h3>Advanced Fixes</h3>
-          <ul>
-            <li><i class="fas fa-trash-alt"></i> Delete <code>HKCU\Software\DownloadManager</code></li>
-            <li><i class="fas fa-folder-open"></i> Clear <code>%appdata%\DMCache</code></li>
-            <li><i class="fas fa-file-export"></i> Restore <code>IDMan.exe.bak</code></li>
-            <li><i class="fas fa-file-export"></i> Restore <code>IDMGrHlp.exe.bak</code></li>
-            <li><i class="fas fa-fire-extinguisher"></i> Toggle Windows Firewall (option 7)</li>
-          </ul>
-        </div>
-      </div>
     </section>
 
-    <!-- Safety & Risks -->
-    <section id="safety">
-      <div class="section-title">
-        <i class="fas fa-shield-alt"></i> Safety & Risks
-      </div>
-      <div class="grid-2">
-        <div class="card">
-          <i class="fas fa-radiation"></i>
-          <h3>Potential Risks</h3>
-          <ul>
-            <li><i class="fas fa-exclamation"></i> Registry modifications can cause instability</li>
-            <li><i class="fas fa-exclamation"></i> Violates IDM's terms of service</li>
-            <li><i class="fas fa-exclamation"></i> May be flagged by antivirus</li>
-            <li><i class="fas fa-exclamation"></i> IDM updates may detect modifications</li>
-            <li><i class="fas fa-exclamation"></i> File replacement may affect functionality</li>
-          </ul>
+    <!-- ===== OS SUPPORT ===== -->
+    <section id="os" style="background: var(--bg-soft);">
+        <div class="container">
+            <h2 class="section-title fade-in">🖥️ Operating System Support</h2>
+            <p class="section-subtitle fade-in">
+                IDM usage on supported Windows environments
+            </p>
+            <div class="os-grid fade-in">
+                <div class="os-badge">
+                    <svg viewBox="0 0 24 24"><path d="M3 5.5L10.5 4.5V11.5H3V5.5ZM11.5 4.35L21 3V11.5H11.5V4.35ZM3 12.5H10.5V19.5L3 18.5V12.5ZM11.5 12.5H21V21L11.5 19.65V12.5Z"/></svg>
+                    Windows 7
+                </div>
+                <div class="os-badge">
+                    <svg viewBox="0 0 24 24"><path d="M3 5.5L10.5 4.5V11.5H3V5.5ZM11.5 4.35L21 3V11.5H11.5V4.35ZM3 12.5H10.5V19.5L3 18.5V12.5ZM11.5 12.5H21V21L11.5 19.65V12.5Z"/></svg>
+                    Windows 8
+                </div>
+                <div class="os-badge">
+                    <svg viewBox="0 0 24 24"><path d="M3 5.5L10.5 4.5V11.5H3V5.5ZM11.5 4.35L21 3V11.5H11.5V4.35ZM3 12.5H10.5V19.5L3 18.5V12.5ZM11.5 12.5H21V21L11.5 19.65V12.5Z"/></svg>
+                    Windows 8.1
+                </div>
+                <div class="os-badge">
+                    <svg viewBox="0 0 24 24"><path d="M3 5.5L10.5 4.5V11.5H3V5.5ZM11.5 4.35L21 3V11.5H11.5V4.35ZM3 12.5H10.5V19.5L3 18.5V12.5ZM11.5 12.5H21V21L11.5 19.65V12.5Z"/></svg>
+                    Windows 10
+                </div>
+                <div class="os-badge">
+                    <svg viewBox="0 0 24 24"><path d="M3 5.5L10.5 4.5V11.5H3V5.5ZM11.5 4.35L21 3V11.5H11.5V4.35ZM3 12.5H10.5V19.5L3 18.5V12.5ZM11.5 12.5H21V21L11.5 19.65V12.5Z"/></svg>
+                    Windows 11
+                </div>
+            </div>
+            <div class="info-box fade-in">
+                <span class="icon">ℹ️</span>
+                <p>
+                    Actual IDM compatibility may vary by IDM release and Windows version. 
+                    Check the official IDM website for current requirements.
+                </p>
+            </div>
         </div>
-        <div class="card">
-          <i class="fas fa-check-double"></i>
-          <h3>Mitigation</h3>
-          <ul>
-            <li><i class="fas fa-check"></i> Always backup registry before use</li>
-            <li><i class="fas fa-check"></i> Use on supported Windows versions only</li>
-            <li><i class="fas fa-check"></i> Ensure IDM isn't running during activation</li>
-            <li><i class="fas fa-check"></i> Use firewall toggle if needed</li>
-            <li><i class="fas fa-check"></i> File replacement creates backups</li>
-          </ul>
-        </div>
-      </div>
     </section>
 
-    <!-- Disclaimer -->
-    <div class="disclaimer">
-      <i class="fas fa-balance-scale"></i>
-      <p><strong>⚠️ Legal Disclaimer:</strong> This script is for educational purposes only. Using it to bypass software licensing violates IDM's terms of service. The authors are not responsible for any misuse. We recommend purchasing a legitimate license.</p>
-    </div>
+    <!-- ===== CONTRIBUTORS ===== -->
+    <section id="contributors">
+        <div class="container">
+            <h2 class="section-title fade-in">🤝 Acknowledgements</h2>
+            <p class="section-subtitle fade-in">
+                This project references work and research contributed by members of the IDM community.
+            </p>
+            <div class="contributors-grid">
+                <div class="contributor-card fade-in">
+                    <div class="contributor-avatar">D</div>
+                    <h4>Dukun Cabul</h4>
+                    <p>Original Research</p>
+                </div>
+                <div class="contributor-card fade-in">
+                    <div class="contributor-avatar">A</div>
+                    <h4>AveYo</h4>
+                    <p>Windows Registry Research</p>
+                </div>
+                <div class="contributor-card fade-in">
+                    <div class="contributor-avatar">A</div>
+                    <h4>abbodi1406</h4>
+                    <p>Coding Assistance</p>
+                </div>
+                <div class="contributor-card fade-in">
+                    <div class="contributor-avatar">W</div>
+                    <h4>WindowsAddict</h4>
+                    <p>Original IAS Project</p>
+                </div>
+            </div>
+            <div class="warning-box fade-in" style="margin-top: 2rem;">
+                <span class="icon">🙏</span>
+                <p>
+                    Please respect the original authors and their licenses when using or 
+                    redistributing their work.
+                </p>
+            </div>
+        </div>
+    </section>
 
-    <!-- Footer -->
+    <!-- ===== LINKS (UPDATED) ===== -->
+    <section id="links" style="background: var(--bg-soft);">
+        <div class="container">
+            <h2 class="section-title fade-in">🔗 Useful Links</h2>
+            <p class="section-subtitle fade-in">Helpful resources and official pages</p>
+            <div class="links-grid">
+                <a href="https://github.com/iemabdullah/IDM-Activation-Upadte" target="_blank" rel="noopener" class="link-card fade-in">
+                    <span class="link-icon">💻</span>
+                    <div class="link-text">
+                        <h4>GitHub Repository (Download)</h4>
+                        <p>github.com/iemabdullah/IDM-Activation-Upadte</p>
+                    </div>
+                </a>
+                <a href="https://github.com/iemabdullah/IDM-Activation-Upadte/archive/refs/heads/main.zip" target="_blank" rel="noopener" class="link-card fade-in">
+                    <span class="link-icon">⬇️</span>
+                    <div class="link-text">
+                        <h4>Direct ZIP Download</h4>
+                        <p>Download all files as ZIP</p>
+                    </div>
+                </a>
+                <a href="https://www.internetdownloadmanager.com/" target="_blank" rel="noopener" class="link-card fade-in">
+                    <span class="link-icon">🌐</span>
+                    <div class="link-text">
+                        <h4>Official IDM Website</h4>
+                        <p>internetdownloadmanager.com</p>
+                    </div>
+                </a>
+                <a href="https://www.internetdownloadmanager.com/register/new_faq/bi9.html" target="_blank" rel="noopener" class="link-card fade-in">
+                    <span class="link-icon">🛠️</span>
+                    <div class="link-text">
+                        <h4>Chrome Integration Help</h4>
+                        <p>Official troubleshooting guide</p>
+                    </div>
+                </a>
+                <a href="https://www.internetdownloadmanager.com/register/new_faq/bi4.html" target="_blank" rel="noopener" class="link-card fade-in">
+                    <span class="link-icon">🦊</span>
+                    <div class="link-text">
+                        <h4>Firefox Integration Help</h4>
+                        <p>Official troubleshooting guide</p>
+                    </div>
+                </a>
+                <a href="http://abdullah.nyc.mn/" target="_blank" rel="noopener" class="link-card fade-in">
+                    <span class="link-icon">👤</span>
+                    <div class="link-text">
+                        <h4>Abdullah's Website</h4>
+                        <p>abdullah.nyc.mn</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== DISCLAIMER ===== -->
+    <section>
+        <div class="container">
+            <h2 class="section-title fade-in">📜 Disclaimer</h2>
+            <div class="warning-box fade-in">
+                <span class="icon">⚠️</span>
+                <p>
+                    This repository is an independent community project. 
+                    <strong>Internet Download Manager</strong> and related trademarks belong to their respective owners. 
+                    The project does not provide unauthorized licenses, stolen serial numbers, modified IDM binaries, 
+                    or pirated copies of commercial software. Users should obtain IDM through official channels and 
+                    comply with its applicable license terms.
+                </p>
+            </div>
+            <p class="fade-in" style="text-align: center; color: var(--text-muted); font-size: 0.9rem; margin-top: 1rem;">
+                Latest Documentation Version: <strong style="color: var(--primary);">v1.2 — February 12, 2024</strong>
+            </p>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
     <footer>
-      <p>
-        <i class="fas fa-code"></i> 
-        Based on open-source techniques · 
-        <i class="fas fa-heart heart"></i> 
-        by Open Source Community
-      </p>
-      <p style="margin-top: 10px; font-size: 0.75rem;">
-        <i class="fab fa-github"></i> 
-        <a href="https://github.com/iemabdullah/IDM-Activator" target="_blank" rel="noopener">github.com/iemabdullah/IDM-Activator</a>
-      </p>
+        <div class="footer-content">
+            <p class="footer-heart">
+                Made with <span class="heart">❤️</span> by Abdullah
+            </p>
+            <a href="http://abdullah.nyc.mn/" class="footer-link" target="_blank" rel="noopener">
+                abdullah.nyc.mn
+            </a>
+            <div class="footer-divider"></div>
+            <p class="footer-tagline">
+                Community documentation • Windows tools • IDM guides
+            </p>
+            <a href="https://github.com/iemabdullah/IDM-Activation-Upadte" target="_blank" rel="noopener" class="star-cta">
+                ⭐ Star the repository on GitHub!
+            </a>
+        </div>
     </footer>
-  </div>
+
+    <!-- ===== FLOATING DOWNLOAD BUTTON ===== -->
+    <a href="https://github.com/iemabdullah/IDM-Activation-Upadte" target="_blank" rel="noopener" class="floating-download">
+        <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        Download
+    </a>
+
+    <!-- ===== BACK TO TOP ===== -->
+    <button class="back-to-top" id="backToTop" aria-label="Back to top">↑</button>
+
+    <!-- ===== JAVASCRIPT ===== -->
+    <script>
+        // ===== NAV TOGGLE =====
+        const navToggle = document.getElementById('navToggle');
+        const navLinks = document.getElementById('navLinks');
+
+        navToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('open');
+            navToggle.textContent = navLinks.classList.contains('open') ? '✕' : '☰';
+        });
+
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('open');
+                navToggle.textContent = '☰';
+            });
+        });
+
+        // ===== FADE IN ON SCROLL =====
+        const observerOptions = {
+            threshold: 0.08,
+            rootMargin: '0px 0px -60px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // ===== STAGGERED FADE IN FOR GRIDS =====
+        const staggerObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const children = entry.target.querySelectorAll('.fade-in');
+                    children.forEach((child, index) => {
+                        setTimeout(() => {
+                            child.classList.add('visible');
+                        }, index * 100);
+                    });
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.about-grid, .troubleshoot-grid, .contributors-grid, .links-grid, .steps, .os-grid').forEach(grid => {
+            staggerObserver.observe(grid);
+        });
+
+        // ===== BACK TO TOP =====
+        const backToTop = document.getElementById('backToTop');
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 500) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        });
+
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // ===== NAVBAR SCROLL EFFECT =====
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // ===== SCROLL PROGRESS BAR =====
+        const progressBar = document.getElementById('progressBar');
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.scrollY;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const progress = (scrollTop / docHeight) * 100;
+            progressBar.style.width = progress + '%';
+        });
+
+        // ===== SMOOTH SCROLL FOR ANCHOR LINKS =====
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const href = this.getAttribute('href');
+                if (href !== '#' && document.querySelector(href)) {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    const offsetTop = target.offsetTop - 70;
+                    window.scrollTo({
+                        top: offsetTop,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // ===== MOUSE PARALLAX FOR BLOBS =====
+        document.addEventListener('mousemove', (e) => {
+            const blobs = document.querySelectorAll('.blob');
+            const x = (e.clientX / window.innerWidth - 0.5) * 30;
+            const y = (e.clientY / window.innerHeight - 0.5) * 30;
+            
+            blobs.forEach((blob, index) => {
+                const speed = (index + 1) * 0.5;
+                blob.style.transform = `translate(${x * speed}px, ${y * speed}px)`;
+            });
+        });
+
+        // ===== CARD TILT EFFECT =====
+        document.querySelectorAll('.about-card, .troubleshoot-card, .contributor-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = (y - centerY) / 20;
+                const rotateY = (centerX - x) / 20;
+                
+                card.style.transform = `translateY(-8px) perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = '';
+            });
+        });
+
+        // ===== PAGE LOAD ANIMATION =====
+        window.addEventListener('load', () => {
+            document.body.style.opacity = '0';
+            setTimeout(() => {
+                document.body.style.transition = 'opacity 0.6s ease';
+                document.body.style.opacity = '1';
+            }, 50);
+        });
+    </script>
+
 </body>
 </html>
